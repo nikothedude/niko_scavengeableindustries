@@ -1,0 +1,2 @@
+name,id,tags,tech/manufacturer,rarity,base price,stack size,cargo space,baseRaidDanger,icon,sound id,sound id drop,plugin,plugin params,desc,order
+NSI Blueprint,NSI_IndustryBPItem,NSI_randomBP,,,20000,1000,1,,graphics/icons/cargo/blueprint_industry.png,ui_chip_pickup,ui_industry_bp_drop,niko_scavengableindustries.IndustryBPItem,,Contains the technological specifications needed to construct a planet-side industry or structure.,401

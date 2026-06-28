@@ -1,0 +1,23 @@
+id,drop_weight,sell_weight,req_mod_ids,req_flags,known_by,discovery_text
+#EXAMPLE,"if 0, never drops from loot","if 0, never sold by factions","separated by commas
+if a modid listed here is not loaded, the augment is not added","separated by commas
+checks to see if weve enabled our mod's limiting in config","separated by commas
+faction ids, only applied on new game",text entered here is appended to the blueprint
+NSI_constructionAcceleratorIndustry,100,100,,,"mercenary, scavengers","This type of infrastructure was well-used in the initial colonization rush of the sector. Unfortunately, the exact methods, policies, and equipment needed for such rampant expansion was too disorganized to fall onto a standardized blueprint... until now. Now, you can replicate the gold rush of ages past."
+NSI_cryosanctum,50,0,,,"independent, mercenary","A decidely post-collapse invention, the Cryosanctum of Nomios was long considered the  only sanctum in the sector - til now. It would seem more polities than just Nomios had the same idea, as this spec proudly declares.
+
+Interesting, you note a secondary system - not on any public records - of some sort of removal system behind the pods, and an elaborate medlab labelled ""harvesting"" beneath the complex. Perhaps the intent was never so benevolent."
+NSI_trainingGrounds,100,20,,,"hegemony, mercenary","While any military base can teach a man how to hold a gun and wear power armor, the Domain took it an extra step by forcefully acquainting new recruits with their to-be commander's commanding style through a ""secondary school"" - a grueling multi-cycle process of combat sim after combat sim, each more immersive than the last. 
+
+By the end, recruits aren't even aware of the fact they were in training - it just felt like another mission.
+
+The specs you've found teach how to execute this form of training, as well as how to construct the requisite equipment."
+NSI_nebulaSiphoner,100,100,,,"mercenary, scavengers","A long-lost art. Nebula skimming is overall less efficient, more expensive, far more complicated and far less reliable than deep-core mining, relying on planetary position to strike any meaningful profit. Still, it has its use - not every system-bound polity will have access to volatiles, and while this problem was largely solved with the gate network, the problem rears its head yet again."
+NSI_expertDockworks,100,100,,,"mercenary, scavengers","The spec contained on this chip is less of a single megastructure, and more a list of engineering, leadership, and technological principles that would enable large-scale second-pass refinement suitable for nation-state deployment. The requested materials are as staggering as they are strict, but Mbaye-Gogol was not known for their fast-and-loose methodology to shipbuilding. Perhaps its best to go by their word."
+NSI_STCDistrict,100,100,,,"mercenary, scavengers","Seen rarely in the persean sector, even pre-collapse, STC centers were used to coordinate vast swaths of interstellar traffic and avoid gridlock. Being so infrequently used its no surprise its specs were lost to time, but seeing the staggering technological requirements firsthand - you may also see a second reason."
+,,,,,,
+,,,,,,
+,,,,,,
+,,,,,,
+#IndEvo - off by default,,,,,,
+#IndEvo_ScrapYard,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",

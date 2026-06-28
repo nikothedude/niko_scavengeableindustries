@@ -1,0 +1,3 @@
+commodity,group,freq
+nothing,NSI_RandomBlueprint,100
+"item_:{tags:[NSI_randomBP, !no_drop]}",NSI_RandomBlueprint,1
