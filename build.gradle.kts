@@ -23,6 +23,8 @@ val modDependencies = listOf(
 
     "LunaLib.jar", //LunaLib
 
+    "lw_Console.jar",
+
     //Some other common dependencies, uncomment them if you need them.
     //Make sure to note them in mod_info.json as well.
 

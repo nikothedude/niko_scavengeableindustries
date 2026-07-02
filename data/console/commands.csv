@@ -1,0 +1,3 @@
+command,class,tags,syntax,help
+NSISetupFactionIndustries,niko_scavengableindustries.commands.NSISetupFactionIndustries,"debug,settings",NSISetupFactionIndustries,"Sets up industry knowledge, e.g. removing them from the player faction."
+NSILoadSettings,niko_scavengableindustries.commands.NSILoadSettings,"debug,settings",NSILoadSettings,Force Reloads NSI settings.

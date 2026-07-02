@@ -5,8 +5,30 @@ import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.listeners.ColonyCrisesSetupListener
 import com.fs.starfarer.api.impl.campaign.ids.Items
 import com.fs.starfarer.api.impl.campaign.intel.events.HostileActivityEventIntel
+import lunalib.lunaSettings.LunaSettings
+import lunalib.lunaSettings.LunaSettingsListener
 
 class NSIModPlugin : BaseModPlugin() {
+
+    companion object {
+        fun setupFactionIndustryKnowledge() {
+            for (fac in Global.getSector().allFactions) {
+                for (spec in NSISettings.industrySpecs.values) {
+                    if (spec.knownBy.contains("base_bp")) {
+                        fac.addKnownIndustry(spec.id)
+                        break
+                    }
+
+                    if (spec.knownBy.contains(fac.id)) {
+                        fac.addKnownIndustry(spec.id)
+                    } else {
+                        fac.removeKnownIndustry(spec.id)
+                    }
+                }
+            }
+        }
+    }
+
     /*This method is run right at the end of starsectors loading.
        * It is most useful for loading data that only really needs to be setup once. */
     @Throws(Exception::class)
@@ -20,7 +42,15 @@ class NSIModPlugin : BaseModPlugin() {
             }
         }
 
+        LunaSettings.addSettingsListener(NSISettingsChangedListener())
+
         return
+    }
+
+    class NSISettingsChangedListener: LunaSettingsListener {
+        override fun settingsChanged(modID: String) {
+            NSISettings.loadSettings()
+        }
     }
 
     /*This method is run in two cases:
@@ -52,22 +82,5 @@ class NSIModPlugin : BaseModPlugin() {
 
     override fun onNewGameAfterTimePass() {
         setupFactionIndustryKnowledge()
-    }
-
-    private fun setupFactionIndustryKnowledge() {
-        for (fac in Global.getSector().allFactions) {
-            for (spec in NSISettings.industrySpecs.values) {
-                if (spec.knownBy.contains("base_bp")) {
-                    fac.addKnownIndustry(spec.id)
-                    break
-                }
-
-                if (spec.knownBy.contains(fac.id)) {
-                    fac.addKnownIndustry(spec.id)
-                } else {
-                    fac.removeKnownIndustry(spec.id)
-                }
-            }
-        }
     }
 }

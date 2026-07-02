@@ -1,0 +1,13 @@
+{
+	#"niko_MPC_defenseSatelliteBarrage":{
+	#	"plugin":"data.scripts.campaign.terrain.satelliteBarrage.niko_MPC_defenseSatelliteBarrageTerrainPlugin",
+	#},
+	"NSI_asbTerrain":{
+		"plugin":"niko_scavengableindustries.industries.ASBUplink.ASBUplinkTerrain",
+		"musicSuppression":0.0,
+		# inside field
+		#"loopOne":"terrain_magfield",
+		# inside active aurora/magnetic storm
+		#"loopTwo":"terrain_magstorm",
+	},
+}
