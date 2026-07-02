@@ -101,36 +101,50 @@ class ASBUplinkTerrain: BaseRingTerrain() {
     private fun barrage(fleet: CampaignFleetAPI, days: Float) {
         val accuracy = getAccuracy(fleet)
         val indParams: ASBUplinkIndustrySpec = getIndustryParams()
-        var baseMult = (indParams.damageCoeff) * 6f
-        if (getCastedParams().industry.aiCoreId == Commodities.ALPHA_CORE) {
-            baseMult += (1 - ALPHA_DAMAGE_MULT)
-        }
-
-        // CR loss and peak time reduction
-        for (member in fleet.fleetData.membersListCopy) {
-            val recoveryRate = member.stats.baseCRRecoveryRatePercentPerDay.getModifiedValue()
-            val lossRate = member.stats.baseCRRecoveryRatePercentPerDay.baseValue
-
-            val adjustedLossMult: Float = (baseMult * accuracy * BASE_CR_LOSS)
-            var loss: Float = (-1f * recoveryRate + -1f * lossRate * adjustedLossMult) * days * 0.01f
-            val curr = member.repairTracker.baseCR
-            if (loss > curr) loss = curr
-            member.repairTracker.applyCREvent(loss, "${getMarket().id}_${spec.id}", "Flak Fire")
-            if (accuracy > 0.03f && prob(25 * days)) {
-                // strong hit, does damage
-                var hitsLeft = 1f
-                while (hitsLeft-- > 0f) {
-                    val hitStrength = member.stats.armorBonus.computeEffective(member.hullSpec.armorRating)
-                    member.status.applyDamage(hitStrength * baseMult)
-                }
+        if (fleet.battle != null) { // op in battles cause theyre standing still. do vfx anyway
+            var baseMult = (indParams.damageCoeff) * 6f
+            if (getCastedParams().industry.aiCoreId == Commodities.ALPHA_CORE) {
+                baseMult += (1 - ALPHA_DAMAGE_MULT)
             }
 
-            // needs to be applied when resistance is 0 to immediately cancel out the debuffs (by setting them to 0)
-            val peakFraction = 1f / max(1.3333f, 1f + baseMult * accuracy)
-            var peakLost = 1f - peakFraction
-            val degradationMult: Float = 1f + (baseMult * accuracy) / 2f
-            member.buffManager.addBuffOnlyUpdateStat(PeakPerformanceBuff("${getMarket().id}_${spec.id}_1", 1f - peakLost, 0.1f))
-            member.buffManager.addBuffOnlyUpdateStat(CRLossPerSecondBuff("${getMarket().id}_${spec.id}_2", degradationMult, 0.1f))
+            // CR loss and peak time reduction
+            for (member in fleet.fleetData.membersListCopy) {
+                val recoveryRate = member.stats.baseCRRecoveryRatePercentPerDay.getModifiedValue()
+                val lossRate = member.stats.baseCRRecoveryRatePercentPerDay.baseValue
+
+                val adjustedLossMult: Float = (baseMult * accuracy * BASE_CR_LOSS)
+                var loss: Float = (-1f * recoveryRate + -1f * lossRate * adjustedLossMult) * days * 0.01f
+                val curr = member.repairTracker.baseCR
+                if (loss > curr) loss = curr
+                member.repairTracker.applyCREvent(loss, "${getMarket().id}_${spec.id}", "Flak Fire")
+                if (accuracy > 0.03f && prob(25 * days)) {
+                    // strong hit, does damage
+                    var hitsLeft = 1f
+                    while (hitsLeft-- > 0f) {
+                        val hitStrength = member.stats.armorBonus.computeEffective(member.hullSpec.armorRating)
+                        member.status.applyDamage(hitStrength * baseMult)
+                    }
+                }
+
+                // needs to be applied when resistance is 0 to immediately cancel out the debuffs (by setting them to 0)
+                val peakFraction = 1f / max(1.3333f, 1f + baseMult * accuracy)
+                var peakLost = 1f - peakFraction
+                val degradationMult: Float = 1f + (baseMult * accuracy) / 2f
+                member.buffManager.addBuffOnlyUpdateStat(
+                    PeakPerformanceBuff(
+                        "${getMarket().id}_${spec.id}_1",
+                        1f - peakLost,
+                        0.1f
+                    )
+                )
+                member.buffManager.addBuffOnlyUpdateStat(
+                    CRLossPerSecondBuff(
+                        "${getMarket().id}_${spec.id}_2",
+                        degradationMult,
+                        0.1f
+                    )
+                )
+            }
         }
 
         if (vfxTimeouts[fleet] == null) {
@@ -178,8 +192,6 @@ class ASBUplinkTerrain: BaseRingTerrain() {
     }
 
     private fun shouldApplyEffect(fleet: CampaignFleetAPI): Boolean {
-        if (fleet.battle != null) return false // overpowered in battles
-
         val market = getMarket()
         return fleet.faction.isHostileTo(market.faction)
     }
