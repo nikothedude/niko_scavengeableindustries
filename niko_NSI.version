@@ -14,7 +14,7 @@
     # created after October 2012 will not have a Public folder, unfortunately.
     #
     # Example links for common hosts:
-    "masterVersionFile":"https://github.com/nikothedude/niko_scavengeableindustries/master/niko_NSI_release.version",
+    "masterVersionFile":"https://raw.githubusercontent.com/nikothedude/niko_scavengeableindustries/refs/heads/master/niko_NSI_release.version",
 
     "modName":"Niko's Scavengable Industries",
 
