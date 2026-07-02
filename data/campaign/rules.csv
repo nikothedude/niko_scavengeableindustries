@@ -1,0 +1,10 @@
+id,trigger,conditions,script,text,options,notes
+"#RULESET_NAME NSI",,,,,,
+,,,,,,
+# Spy Fleets,,,,,,
+NSI_SpyFleetHail,NSI_SpyFleetHail,,"unset $entity.genericHail
+$entity.ignorePlayerCommRequests = true","The commlink flickers to life, then death, as it fumbles its way through ten layers of proxy-tunneling, before finally resolving on the $rank's face. Before you can ask any questions, $heOrShe flashes $hisOrHer transponder to yours for a moment - confirming your suspicions. This is one of your covert fleets from your Spy Bureau.
+
+""Pleasure to meet you $PlayerSirOrMadam. Op going well so far $PlayerSirOrMadam."" $HeOrShe nods affirmingly. ""Can't speak long - might break cover. Will refuse further connections. Good hunting.""","cutCommLink:Nod, and cut the comm link",
+"#END Spy Fleets",,,,,,
+

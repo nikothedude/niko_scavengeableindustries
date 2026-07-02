@@ -2,12 +2,24 @@ package niko_scavengableindustries
 
 import com.fs.starfarer.api.BaseModPlugin
 import com.fs.starfarer.api.Global
+import com.fs.starfarer.api.campaign.listeners.ColonyCrisesSetupListener
+import com.fs.starfarer.api.impl.campaign.ids.Items
+import com.fs.starfarer.api.impl.campaign.intel.events.HostileActivityEventIntel
 
 class NSIModPlugin : BaseModPlugin() {
     /*This method is run right at the end of starsectors loading.
        * It is most useful for loading data that only really needs to be setup once. */
     @Throws(Exception::class)
     override fun onApplicationLoad() {
+
+        Global.getSettings().getSpecialItemSpec(Items.PLASMA_DYNAMO).params += ", NSI_nebulaSiphoner"
+
+        for (spec in Global.getSettings().allSpecialItemSpecs) {
+            if (spec.tags.contains("nanoforge")) {
+                spec.params += ", NSI_expertDockworks"
+            }
+        }
+
         return
     }
 

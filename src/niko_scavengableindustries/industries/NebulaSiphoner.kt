@@ -1,23 +1,30 @@
 package niko_scavengableindustries.industries
 
 import com.fs.starfarer.api.Global
+import com.fs.starfarer.api.campaign.SpecialItemData
 import com.fs.starfarer.api.campaign.econ.Industry
 import com.fs.starfarer.api.campaign.econ.Industry.AICoreDescriptionMode
+import com.fs.starfarer.api.campaign.econ.InstallableIndustryItemPlugin
+import com.fs.starfarer.api.campaign.econ.InstallableIndustryItemPlugin.InstallableItemDescriptionMode
 import com.fs.starfarer.api.impl.campaign.econ.impl.BaseIndustry
+import com.fs.starfarer.api.impl.campaign.econ.impl.BaseInstallableItemEffect
+import com.fs.starfarer.api.impl.campaign.econ.impl.InstallableItemEffect
+import com.fs.starfarer.api.impl.campaign.econ.impl.ItemEffectsRepo
 import com.fs.starfarer.api.impl.campaign.ids.Commodities
+import com.fs.starfarer.api.impl.campaign.ids.Items
 import com.fs.starfarer.api.impl.campaign.terrain.NebulaTerrainPlugin
 import com.fs.starfarer.api.loading.CampaignPingSpec
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
+import data.scripts.DelayedExecution
 import niko_scavengableindustries.utils.StringUtils.toPercent
-import org.lazywizard.lazylib.ext.campaign.contains
 import kotlin.math.floor
 
 /// Siphon nebula gas when the market is in a nebula
 /// Stockpile it and generate volatiles for a while after
 /// New nebulas give more
-class NebulaSiphoner: BaseIndustry() {
+class NebulaSiphoner : BaseIndustry() {
 
     companion object {
         const val BASE_MAX_VOLATILE_STORAGE = 1500f
@@ -27,9 +34,13 @@ class NebulaSiphoner: BaseIndustry() {
         const val SIPHON_SPEED_SIZE_MULT = 0.25f
 
         const val BASE_SIPHON_RATE_PER_SECOND = 1f
-        const val VOLATILES_DECAY_PER_SECOND = 0.1f
+        const val VOLATILES_DECAY_PER_SECOND = 0.3f
 
         const val BASE_OUTPUT = 1f
+
+        const val FRONTEND_MOL_MULT = 215.53f
+
+        const val DYNAMO_EFFICIENCY_MULT = 0.75f
     }
 
     var storedVolatiles = 0f
@@ -55,6 +66,11 @@ class NebulaSiphoner: BaseIndustry() {
             (BASE_OUTPUT + (storedBonus) * mult).toInt(),
             nameForModifier
         )
+
+        if (special != null) {
+            val effect = ItemEffectsRepo.ITEM_EFFECTS[special.id]
+            effect?.unapply(this)
+        }
     }
 
     override fun unapply() {
@@ -102,12 +118,24 @@ class NebulaSiphoner: BaseIndustry() {
         }
 
         val currBonus = getStoredVolatilesOutputBonus()
-        storedVolatiles = (storedVolatiles - (VOLATILES_DECAY_PER_SECOND * amount * (currBonus + 1))).coerceAtLeast(0f)
+        storedVolatiles = (storedVolatiles - (VOLATILES_DECAY_PER_SECOND * amount * (currBonus + 1f))).coerceAtLeast(0f)
     }
 
     fun getStoredVolatilesOutputBonus(): Float {
         if (storedVolatiles == 0f) return 0f
-        return (floor(storedVolatiles / VOLATILE_STORAGE_PER_OUTPUT))
+        val specialMult = if (special?.id == Items.PLASMA_DYNAMO) DYNAMO_EFFICIENCY_MULT else 1f
+        return (floor(storedVolatiles / (VOLATILE_STORAGE_PER_OUTPUT * specialMult)))
+    }
+
+    override fun addRightAfterDescriptionSection(tooltip: TooltipMakerAPI?, mode: Industry.IndustryTooltipMode?) {
+        super.addRightAfterDescriptionSection(tooltip, mode)
+
+        tooltip?.addPara(
+            "Processing efficiency be improved with a %s.",
+            10f,
+            Misc.getHighlightColor(),
+            "Plasma Dynamo"
+        )
     }
 
     override fun addPostSupplySection(
@@ -133,7 +161,7 @@ class NebulaSiphoner: BaseIndustry() {
                         "ensures at least %s unit of volatiles is always exported.",
                 10f,
                 Misc.getHighlightColor(),
-                "${(storedVolatiles * 215.53f).toInt()} mols", "$bonus", "${1 + bonus}x", "one"
+                "${(storedVolatiles * FRONTEND_MOL_MULT).toInt()} mols", "$bonus", "${1 + bonus}x", "one"
             )
         } else {
             tooltip.addPara(
@@ -170,7 +198,7 @@ class NebulaSiphoner: BaseIndustry() {
             text.addPara(
                 pre + "Reduces upkeep cost by %s. Reduces demand by %s unit. " +
                         "Improves gas storage by %s.", 0f, highlight,
-                "" + ((1f - UPKEEP_MULT) * 100f).toInt() + "%", "" + DEMAND_REDUCTION, "${ALPHA_CORE_STORAGE_INCR.toInt()} mols"
+                "" + ((1f - UPKEEP_MULT) * 100f).toInt() + "%", "" + DEMAND_REDUCTION, "${ALPHA_CORE_STORAGE_INCR * FRONTEND_MOL_MULT} mols"
             )
             tooltip.addImageWithText(opad)
             return
@@ -179,8 +207,12 @@ class NebulaSiphoner: BaseIndustry() {
         tooltip.addPara(
             pre + "Reduces upkeep cost by %s. Reduces demand by %s unit. " +
                     "Improves gas storage by %s.", opad, highlight,
-            "" + ((1f - UPKEEP_MULT) * 100f).toInt() + "%", "" + DEMAND_REDUCTION, "${ALPHA_CORE_STORAGE_INCR.toInt()} mols"
+            "" + ((1f - UPKEEP_MULT) * 100f).toInt() + "%", "" + DEMAND_REDUCTION, "${ALPHA_CORE_STORAGE_INCR * FRONTEND_MOL_MULT} mols"
         )
+    }
+
+    override fun applyAlphaCoreSupplyAndDemandModifiers() {
+        demandReduction.modifyFlat(getModId(0), DEMAND_REDUCTION.toFloat(), "Alpha core")
     }
 
     override fun isAvailableToBuild(): Boolean {
@@ -205,6 +237,102 @@ class NebulaSiphoner: BaseIndustry() {
     fun hasNebulas(): Boolean {
         val result = market?.containingLocation?.terrainCopy?.any { it.plugin is NebulaTerrainPlugin } == true
         return result
+    }
+
+    override fun wantsToUseSpecialItem(data: SpecialItemData?): Boolean {
+        if (special != null) return false
+
+        if (data?.id == Items.PLASMA_DYNAMO) {
+            return true
+        }
+
+        return super.wantsToUseSpecialItem(data)
+    }
+
+    override fun getInstallableItems(): List<InstallableIndustryItemPlugin?>? {
+        temporarilyModifySpecialItemSpec()
+
+        return super.getInstallableItems()
+    }
+
+    var specModified = false
+    private fun temporarilyModifySpecialItemSpec() {
+        if (specModified) {
+            return
+        }
+        val spec = ItemEffectsRepo.ITEM_EFFECTS[Items.PLASMA_DYNAMO]
+        ItemEffectsRepo.ITEM_EFFECTS[Items.PLASMA_DYNAMO] = object : BaseInstallableItemEffect(Items.PLASMA_DYNAMO) {
+            override fun apply(industry: Industry?) {
+                return
+            }
+
+            override fun unapply(industry: Industry?) {
+                return
+            }
+
+            override fun addItemDescriptionImpl(
+                industry: Industry?,
+                text: TooltipMakerAPI?,
+                data: SpecialItemData?,
+                mode: InstallableItemDescriptionMode?,
+                pre: String?,
+                pad: Float
+            ) {
+                super.addItemDescriptionImpl(industry, text, data, mode, pre, pad)
+
+                if (text == null) return
+
+                text.addPara(
+                    "Improves %s, effectively increasing both capacity and output.",
+                    pad,
+                    Misc.getHighlightColor(),
+                    "processing efficiency"
+                )
+            }
+
+            override fun getSimpleReqs(industry: Industry?): Array<out String?>? {
+                return arrayOf(ItemEffectsRepo.COLD_OR_EXTREME_COLD, ItemEffectsRepo.NO_ATMOSPHERE)
+            }
+        }
+
+        val script = object : DelayedExecution(IntervalUtil(1f, 1f), useDays = false) {
+            override fun executeImpl() {
+                ItemEffectsRepo.ITEM_EFFECTS[Items.PLASMA_DYNAMO] = spec
+                specModified = false
+            }
+
+            override fun runWhilePaused(): Boolean = true
+        }
+
+        specModified = true
+        script.start()
+    }
+
+    override fun addNonAICoreInstalledItems(
+        mode: Industry.IndustryTooltipMode?,
+        tooltip: TooltipMakerAPI?,
+        expanded: Boolean
+    ): Boolean {
+        if (special == null) return false
+
+        val opad = 10f
+        val spec = Global.getSettings().getSpecialItemSpec(special.id)
+
+        val text = tooltip!!.beginImageWithText(spec.iconName, 48f)
+        val effect: InstallableItemEffect = ItemEffectsRepo.ITEM_EFFECTS.get(special.id)!!
+        if (special.id == Items.PLASMA_DYNAMO) {
+            text.addPara(
+                "%s improved, effectively increasing both output and capacity.",
+                opad,
+                Misc.getHighlightColor(),
+                "Processing efficiency"
+            )
+        } else {
+            effect.addItemDescription(this, text, special, InstallableItemDescriptionMode.INDUSTRY_TOOLTIP)
+        }
+        tooltip.addImageWithText(opad)
+
+        return true
     }
 
 }

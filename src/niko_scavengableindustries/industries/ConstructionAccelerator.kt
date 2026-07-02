@@ -154,4 +154,8 @@ class ConstructionAccelerator: BaseIndustry() {
         info.addSpacer(opad)
         super.addImproveDesc(info, mode)
     }
+
+    override fun getPatherInterest(): Float {
+        return super.patherInterest + 2f
+    }
 }

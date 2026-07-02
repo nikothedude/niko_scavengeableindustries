@@ -1,9 +1,12 @@
 package niko_scavengableindustries.industries
 
 import com.fs.starfarer.api.Global
-import com.fs.starfarer.api.campaign.*
+import com.fs.starfarer.api.campaign.CampaignFleetAPI
+import com.fs.starfarer.api.campaign.FleetAssignment
+import com.fs.starfarer.api.campaign.JumpPointAPI
+import com.fs.starfarer.api.campaign.RepLevel
+import com.fs.starfarer.api.campaign.SectorEntityToken
 import com.fs.starfarer.api.campaign.econ.Industry
-import com.fs.starfarer.api.campaign.econ.Industry.AICoreDescriptionMode
 import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.impl.campaign.econ.impl.BaseIndustry
 import com.fs.starfarer.api.impl.campaign.ids.Commodities
@@ -13,8 +16,9 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
 import com.fs.starfarer.api.util.WeightedRandomPicker
-import niko_scavengableindustries.utils.MathUtils.prob
+import niko_scavengableindustries.utils.MathUtils
 import org.magiclib.kotlin.isTrader
+import kotlin.collections.iterator
 import kotlin.math.floor
 
 /// Only one per star sys
@@ -160,7 +164,7 @@ class STCDistrict: BaseIndustry() {
                 fleet.stats.fleetwideMaxBurnMod
             )
 
-            if (prob(5)) {
+            if (MathUtils.prob(5)) {
                 doBlurb(fleet)
             }
         }
@@ -297,17 +301,17 @@ class STCDistrict: BaseIndustry() {
         )
     }
 
-    override fun addAlphaCoreDescription(tooltip: TooltipMakerAPI?, mode: AICoreDescriptionMode?) {
+    override fun addAlphaCoreDescription(tooltip: TooltipMakerAPI?, mode: Industry.AICoreDescriptionMode?) {
         if (tooltip == null) return
 
         val opad = 10f
         val highlight = Misc.getHighlightColor()
 
         var pre = "Alpha-level AI core currently assigned. "
-        if (mode == AICoreDescriptionMode.MANAGE_CORE_DIALOG_LIST || mode == AICoreDescriptionMode.INDUSTRY_TOOLTIP) {
+        if (mode == Industry.AICoreDescriptionMode.MANAGE_CORE_DIALOG_LIST || mode == Industry.AICoreDescriptionMode.INDUSTRY_TOOLTIP) {
             pre = "Alpha-level AI core. "
         }
-        if (mode == AICoreDescriptionMode.INDUSTRY_TOOLTIP || mode == AICoreDescriptionMode.MANAGE_CORE_TOOLTIP) {
+        if (mode == Industry.AICoreDescriptionMode.INDUSTRY_TOOLTIP || mode == Industry.AICoreDescriptionMode.MANAGE_CORE_TOOLTIP) {
             val coreSpec = Global.getSettings().getCommoditySpec(aiCoreId)
             val text = tooltip.beginImageWithText(coreSpec.iconName, 48f)
             text.addPara(
@@ -328,6 +332,7 @@ class STCDistrict: BaseIndustry() {
 
     override fun showWhenUnavailable(): Boolean {
         if (isSuperceded()) return true
+        if (!market.faction.knowsIndustry(spec.id)) return false
 
         return super.showWhenUnavailable()
     }
@@ -343,5 +348,13 @@ class STCDistrict: BaseIndustry() {
         if (isSuperceded()) return "A larger STC Complex exists in this system"
 
         return super.getUnavailableReason()
+    }
+
+    override fun isFunctional(): Boolean {
+        return !isSuperceded() && super.isFunctional()
+    }
+
+    override fun getPatherInterest(): Float {
+        return super.patherInterest + 2f
     }
 }

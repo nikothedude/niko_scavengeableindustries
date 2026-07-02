@@ -10,11 +10,9 @@ import com.fs.starfarer.api.impl.campaign.econ.impl.BaseIndustry
 import com.fs.starfarer.api.impl.campaign.fleets.DefaultFleetInflaterParams
 import com.fs.starfarer.api.impl.campaign.ids.Commodities
 import com.fs.starfarer.api.impl.campaign.ids.Industries
-import com.fs.starfarer.api.impl.campaign.ids.Stats
+import com.fs.starfarer.api.impl.campaign.ids.Items
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
-import com.jcraft.jorbis.Comment
-import niko_scavengableindustries.industries.NebulaSiphoner.Companion.ALPHA_CORE_STORAGE_INCR
 import niko_scavengableindustries.utils.MarketUtils.isPrimaryHeavyIndustry
 import niko_scavengableindustries.utils.MathUtils.prob
 import niko_scavengableindustries.utils.StringUtils.toPercent
@@ -28,7 +26,7 @@ class ExpertDockworks: BaseIndustry() {
 
     companion object {
         const val BASE_SMODS = 1
-        const val IMPROVED_SMOD_BONUS = 1
+        const val PRISTINE_NANOFORGE_SMOD_BONUS = 1
     }
 
     override fun apply() {
@@ -54,6 +52,22 @@ class ExpertDockworks: BaseIndustry() {
 
     override fun unapply() {
         Global.getSector().listenerManager.removeListener(listener)
+    }
+
+    override fun isFunctional(): Boolean {
+        if (!hasNanoforge() || getHeavyIndustry() == null) return false
+        return super.isFunctional()
+    }
+
+    override fun addRightAfterDescriptionSection(tooltip: TooltipMakerAPI?, mode: Industry.IndustryTooltipMode?) {
+        super.addRightAfterDescriptionSection(tooltip, mode)
+
+        tooltip?.addPara(
+            "Requires a %s to function.",
+            10f,
+            Misc.getHighlightColor(),
+            "Nanoforge"
+        )
     }
 
     override fun addPostSupplySection(
@@ -94,6 +108,39 @@ class ExpertDockworks: BaseIndustry() {
                 10f
             ).color = Misc.getNegativeHighlightColor()
         }
+
+        if (special != null) {
+            if (special.id == Items.PRISTINE_NANOFORGE) {
+                tooltip.addPara(
+                    "The installed nanoforge is %s, providing an %s to fleets.",
+                    10f,
+                    Misc.getPositiveHighlightColor(),
+                    "exceptional", "extra s-mod"
+                ).setHighlightColors(
+                    Misc.getPositiveHighlightColor(),
+                    Misc.getStoryOptionColor()
+                )
+            } else if (hasNanoforge()) {
+                tooltip.addPara(
+                    "The installed nanoforge is %s.",
+                    10f,
+                    Misc.getHighlightColor(),
+                    "adequete"
+                )
+            }
+        }
+        if (!hasNanoforge()) {
+            tooltip.addPara(
+                "Without the output of a Nanoforge, your engineers lack material. This industry is insert.",
+                10f
+            ).color = Misc.getNegativeHighlightColor()
+        }
+    }
+
+    private fun hasNanoforge(): Boolean {
+        if (special == null) return false
+        val spec = Global.getSettings().getSpecialItemSpec(special.id)
+        return spec.hasTag("nanoforge")
     }
 
     fun isPrimaryHeavyIndustry(): Boolean {
@@ -110,6 +157,7 @@ class ExpertDockworks: BaseIndustry() {
         ) {
             // UNHOLY CODE
             if (fleet == null || inflater == null) return
+            if (!dockworks.isFunctional) return
             if (fleet.memoryWithoutUpdate["\$NSI_InflatedAlready"] == true) return
             val params = inflater.params as? DefaultFleetInflaterParams ?: return
             if (fleet.faction.id != dockworks.market.faction.id) return
@@ -117,7 +165,8 @@ class ExpertDockworks: BaseIndustry() {
             val mult = dockworks.getOurDeficitMult()
             if (prob(1 - mult)) return
 
-            if (dockworks.aiCoreId != Commodities.ALPHA_CORE && !(fleet.isPatrol() || fleet.isWarFleet())) return
+            if (!dockworks.isImproved && !(fleet.isPatrol() || fleet.isWarFleet())) return
+            if (inflater.removeAfterInflating() && dockworks.aiCoreId != Commodities.ALPHA_CORE) return
             if (fleet.isStationMode) return
 
             val sMods = dockworks.getSmodNum()
@@ -138,7 +187,7 @@ class ExpertDockworks: BaseIndustry() {
     }
 
     override fun addImproveDesc(info: TooltipMakerAPI?, mode: Industry.ImprovementDescriptionMode?) {
-        info?.addPara("Adds an %s to fleets.", 0f, Misc.getHighlightColor(), "extra s-mod")
+        info?.addPara("Expands smods to %s.", 0f, Misc.getHighlightColor(), "non-military fleets")
     }
 
     override fun addAlphaCoreDescription(tooltip: TooltipMakerAPI?, mode: AICoreDescriptionMode?) {
@@ -156,7 +205,7 @@ class ExpertDockworks: BaseIndustry() {
             val text = tooltip.beginImageWithText(coreSpec.iconName, 48f)
             text.addPara(
                 pre + "Reduces upkeep cost by %s. Reduces demand by %s unit. " +
-                        "Expands s-mods to non-military fleets.", 0f, highlight,
+                        "Applies s-mods to ships constructed by custom production.", 0f, highlight,
                 "" + ((1f - UPKEEP_MULT) * 100f).toInt() + "%", "" + DEMAND_REDUCTION
             )
             tooltip.addImageWithText(opad)
@@ -165,14 +214,14 @@ class ExpertDockworks: BaseIndustry() {
 
         tooltip.addPara(
             pre + "Reduces upkeep cost by %s. Reduces demand by %s unit. " +
-                    "Expands s-mods to non-military fleets.", opad, highlight,
+                    "Applies s-mods to ships constructed by custom production.", opad, highlight,
             "" + ((1f - UPKEEP_MULT) * 100f).toInt() + "%", "" + DEMAND_REDUCTION
         )
     }
 
     private fun getSmodNum(): Int {
         var base = BASE_SMODS
-        if (isImproved) base += IMPROVED_SMOD_BONUS
+        if (special?.id == Items.PRISTINE_NANOFORGE) base += PRISTINE_NANOFORGE_SMOD_BONUS
 
         return base
     }
@@ -194,6 +243,10 @@ class ExpertDockworks: BaseIndustry() {
         if (!market.faction.knowsIndustry(spec.id)) return false
 
         return super.showWhenUnavailable()
+    }
+
+    override fun getPatherInterest(): Float {
+        return super.patherInterest + 10f
     }
 
 }
