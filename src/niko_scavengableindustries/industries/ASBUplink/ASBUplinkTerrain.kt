@@ -106,7 +106,7 @@ class ASBUplinkTerrain: BaseRingTerrain() {
     private fun barrage(fleet: CampaignFleetAPI, days: Float) {
         val accuracy = getAccuracy(fleet)
         val indParams: ASBUplinkIndustrySpec = getIndustryParams()
-        if (fleet.battle != null) { // op in battles cause theyre standing still. do vfx anyway
+        if (fleet.battle == null) { // op in battles cause theyre standing still. do vfx anyway
             var baseMult = (indParams.damageCoeff) * 6f
             if (getCastedParams().industry.aiCoreId == Commodities.ALPHA_CORE) {
                 baseMult += (1 - ALPHA_DAMAGE_MULT)
@@ -356,7 +356,7 @@ class ASBUplinkTerrain: BaseRingTerrain() {
         tooltip.addSectionHeading("Combat", Alignment.MID, nextPad)
 
         tooltip.addPara(
-            "The flak cannons are likely to %s, resulting in %s being fired towards whichever side %s is hostile to. TODO UNIMPLEMENTED",
+            "The flak cannons are likely to %s, resulting in %s being fired towards whichever side %s is hostile to.",
             nextPad,
             Misc.getHighlightColor(),
             "interfere with combat", "massive flak shots", "${market.name}"

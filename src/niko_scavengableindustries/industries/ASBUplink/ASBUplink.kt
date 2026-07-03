@@ -121,10 +121,14 @@ class ASBUplink: BaseIndustry() {
         )
 
         tooltip.addPara(
-            "%s on fleets engaged in combat, due to potential friendly fire.",
+            "Provides %s in battles, albeit %s and %s.",
             10f,
+            Misc.getHighlightColor(),
+            "fire support", "highly inaccurate", "relativey low-damage"
+        ).setHighlightColors(
+            Misc.getPositiveHighlightColor(),
             Misc.getNegativeHighlightColor(),
-            "Will not fire"
+            Misc.getNegativeHighlightColor()
         )
 
         if (ASBUplinkTerrain.getBatteries(market) == null) {
@@ -134,7 +138,7 @@ class ASBUplink: BaseIndustry() {
             ).color = Misc.getNegativeHighlightColor()
         } else {
             tooltip.addPara(
-                "Flak cannon performance is dependant on the tier of ground defenses currently installed. %s will cause the flak cannons to fire more frequently.",
+                "Flak cannon performance is dependant on the tier of ground defenses currently installed. %s will cause the flak cannons to do more damage.",
                 10f,
                 Misc.getPositiveHighlightColor(),
                 "Higher tier defenses"
