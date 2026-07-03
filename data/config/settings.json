@@ -2,4 +2,10 @@
  	"ruleCommandPackages":[
  		"niko_scavengableindustries.rulecmd",
  	],
+	
+	"plugins":{
+		"NSI_ASBUplinkCombatAdder":"niko_scavengableindustries.combat.ASBUplinkCombatAdder",
+		"niko_MCTE_nebulaEffect":"niko.MCTE.scripts.everyFrames.combat.terrainEffects.nebula.nebulaEffectScript",
+		"niko_MCTE_campaignPlugin":"niko.MCTE.niko_MCTE_campaignPlugin",
+	},
  }

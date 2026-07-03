@@ -53,9 +53,9 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
     override fun getPrice(market: MarketAPI?, submarket: SubmarketAPI?): Int {
         var price = super.getPrice(market, submarket)
 
-        price = (price * 0.5f).roundToInt()
+        price = (price * 0.25f).roundToInt()
 
-        return price
+        return price.coerceAtMost(100000)
     }
 
     override fun createTooltip(

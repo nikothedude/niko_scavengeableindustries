@@ -1,0 +1,36 @@
+{
+	"id":"NSI_flakShot",
+	"specClass":"missile",
+	"missileType":"MISSILE",
+	"sprite":"graphics/missiles/heavy_mine.png",
+	"size":[48,48],	
+	"center":[24,24],
+	"collisionRadius":48,
+	"collisionClass":"MISSILE_NO_FF",
+	"explosionColor":[255,200,100,255],  # purely visual, will get a white additively blended core on top of this color
+	"explosionRadius":1000, # purely visual
+	"engineSpec":{"turnAcc":0,
+				  "turnRate":0,
+				  #"acc":35,
+				  "acc":5000,
+				  "dec":0},
+	"explosionSpec":{
+						"duration":0.9f,
+						"radius":1000,
+						"coreRadius":300, # full damage within core radius - also equal to proximity fuse range
+						"collisionClass":PROJECTILE_FF,
+						"collisionClassByFighter":PROJECTILE_FIGHTER,
+						"particleSizeMin":3.0,
+						"particleSizeRange":4.0,
+						"particleDuration":3,
+						"particleCount":100,
+						"particleColor":[255,165,70,255],
+						"explosionColor":[255,200,100,255],
+						"sound":"mine_explosion"},
+                        }
+	"flameoutTime":500, # total time from flameout to full fadeout
+	"armingTime":0,
+	"noEngineGlowTime":0.5, # time spent without the engine glow being rendered
+	"fadeTime":0.5, # fadeout duration					 
+}
+			
