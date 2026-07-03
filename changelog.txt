@@ -1,3 +1,7 @@
+0.2.0
+
+Flak cannons are now an industry and fire in combat
+
 0.1.0
 
 Release into beta
