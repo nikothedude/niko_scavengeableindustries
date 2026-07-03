@@ -1,3 +1,8 @@
+0.2.1
+
+Fixes a crash without MCTE
+Fixes indevo industries being added even when disabled
+
 0.2.0
 
 Flak cannons are now an industry and fire in combat

@@ -75,10 +75,15 @@ object NSISettings {
             if (reqFlagData.isNotEmpty()) {
                 reqFlags = reqFlagData.split(Regex("(, *)")).toHashSet()
 
+                var skip = false
                 for (flag in reqFlags) {
                     if (!TEMP_FLAGS.contains(flag)) {
-                        continue
+                        skip = true
+                        break
                     }
+                }
+                if (skip) {
+                    continue
                 }
             }
 
