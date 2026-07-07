@@ -172,6 +172,7 @@ class STCDistrict: BaseIndustry() {
 
     private fun doBlurb(fleet: CampaignFleetAPI) {
         val target = getDest(fleet) ?: return
+        if (target.containingLocation != market.containingLocation) return
         val map: MutableMap<String, Float>
         if (target is JumpPointAPI) {
             map = EN_ROUTE_TO_JUMP_POINT_BLURBS

@@ -3,7 +3,7 @@
   "name": "Niko's Scavengable Industries", #Display Name
   "author": "Niko", 
   "utility": false,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Adds a number of scavengable industries, potentially modifies industries from other mods to be part of the loot pool depending on settings.",
   "gameVersion": "0.98a-RC8",
   "jars": [ "jars/niko_scavengableindustries.jar" ],

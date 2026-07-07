@@ -7,16 +7,19 @@ import com.fs.starfarer.api.campaign.ai.FleetAIFlags
 import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.campaign.listeners.FleetEventListener
 import com.fs.starfarer.api.impl.campaign.econ.RecentUnrest
+import com.fs.starfarer.api.impl.campaign.ids.Abilities
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags
 import com.fs.starfarer.api.impl.campaign.procgen.themes.BaseAssignmentAI
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.MarketCMD
 import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
+import com.fs.starfarer.campaign.ai.CampaignFleetAI
 import com.fs.starfarer.campaign.ai.ModularFleetAI
 import niko_scavengableindustries.NSFIBaseScript
 import org.codehaus.janino.Mod
 import org.lazywizard.lazylib.MathUtils
 import org.magiclib.kotlin.getMarketsInLocation
+import org.magiclib.kotlin.getStationFleet
 import org.magiclib.kotlin.getVisibleFleets
 import org.magiclib.kotlin.isTrader
 
@@ -60,7 +63,7 @@ class SpyFleetAssignmentAI(
 
         const val SUPERIORITY_RATIO_TO_ATTACK_TRADERS = 1.3f
         const val SUPERIORITY_RATIO_TO_TRY_DESTABILIZING = 1.1f
-        const val DIST_TO_MARKET_TO_CONSIDER_DESTABILIZING = 2500f
+        const val DIST_TO_MARKET_TO_CONSIDER_DESTABILIZING = 3000f
         const val DIST_TO_TRADER_TO_CONSIDER_ATTACKING = 1000f
         const val STABILITY_MIN = 3f
         const val FP_ABORT_RATIO = 0.7f
@@ -103,7 +106,7 @@ class SpyFleetAssignmentAI(
             checkOpportunities()
         }
 
-        if ((fleet.fleetPoints / startingFP) <= FP_ABORT_RATIO) {
+        if ((fleet.fleetPoints.toFloat() / startingFP.toFloat()) <= FP_ABORT_RATIO) {
             return returnToBase()
         }
 
@@ -116,7 +119,7 @@ class SpyFleetAssignmentAI(
     }
 
     private fun returnToBase() {
-        if (state == State.RETURNING) return
+        if (fleet.currentAssignment != null && state == State.RETURNING) return
 
         val originalId = fleet.memoryWithoutUpdate[MemFlags.MEMORY_KEY_SOURCE_MARKET] as? String ?: return fleet.despawn()
         val original = Global.getSector().economy.getMarket(originalId) ?: return fleet.despawn()
@@ -149,13 +152,13 @@ class SpyFleetAssignmentAI(
 
             // we want to attack them. now we check to see if we can take them and their allies
 
-            val allies = getPossibleParticipants(false, iterFleet)
-            val enemies = getPossibleParticipants(true, iterFleet)
+            val allies = getPossibleParticipants(false, iterFleet, null)
+            val enemies = getPossibleParticipants(true, iterFleet, null)
 
-            val ourStrength = allies.sumOf { it.fleetPoints }
-            val theirStrength = enemies.sumOf { it.fleetPoints }
+            val ourStrength = allies.sumOf { it.fleetPoints }.toFloat()
+            val theirStrength = enemies.sumOf { it.fleetPoints }.toFloat()
 
-            if (theirStrength == 0 || (ourStrength / theirStrength) >= SUPERIORITY_RATIO_TO_ATTACK_TRADERS) {
+            if (theirStrength == 0f || (ourStrength / theirStrength) >= SUPERIORITY_RATIO_TO_ATTACK_TRADERS) {
                 attackTrader(iterFleet)
                 return
             }
@@ -167,13 +170,13 @@ class SpyFleetAssignmentAI(
             val dist = org.lazywizard.lazylib.MathUtils.getDistance(fleet, market.primaryEntity)
             if (dist > DIST_TO_MARKET_TO_CONSIDER_DESTABILIZING) continue
 
-            val allies = getPossibleParticipants(false, null)
-            val enemies = getPossibleParticipants(true, null)
+            val allies = getPossibleParticipants(false, null, market)
+            val enemies = getPossibleParticipants(true, null, market)
 
-            val ourStrength = allies.sumOf { it.fleetPoints }
-            val theirStrength = enemies.sumOf { it.fleetPoints }
+            val ourStrength = allies.sumOf { it.fleetPoints }.toFloat()
+            val theirStrength = enemies.sumOf { it.fleetPoints }.toFloat()
 
-            if (theirStrength == 0 || (ourStrength / theirStrength) >= SUPERIORITY_RATIO_TO_TRY_DESTABILIZING) {
+            if (theirStrength == 0f || (ourStrength / theirStrength) >= SUPERIORITY_RATIO_TO_TRY_DESTABILIZING) {
                 attackMarket(market)
                 return
             }
@@ -239,13 +242,25 @@ class SpyFleetAssignmentAI(
         )
         fleet.memoryWithoutUpdate[FleetAIFlags.LAST_SEEN_TARGET_LOC] = target.location
         fleet.memoryWithoutUpdate[FleetAIFlags.LAST_SEEN_TARGET_HEADING] = target.facing
+
+        val eburn = fleet.getAbility(Abilities.EMERGENCY_BURN)
+        if (eburn != null && !eburn.isActiveOrInProgress) {
+            eburn.activate()
+        }
     }
 
-    fun getPossibleParticipants(hostile: Boolean, target: CampaignFleetAPI?): MutableSet<CampaignFleetAPI> {
+    fun getPossibleParticipants(hostile: Boolean, target: CampaignFleetAPI?, market: MarketAPI?): MutableSet<CampaignFleetAPI> {
         val participants = HashSet<CampaignFleetAPI>()
 
+        val visible = fleet.getVisibleFleets(true).toMutableSet()
+        if (market != null && market.getStationFleet() != null) {
+            val stationFleet = market.getStationFleet()
+            stationFleet.fleetData.setSyncNeeded()
+            stationFleet.fleetData.syncIfNeeded()
+            visible += market.getStationFleet()
+        }
         for (iterFleet in fleet.getVisibleFleets(true)) {
-            if (fleet.getVisibilityLevelTo(iterFleet).ordinal <= SectorEntityToken.VisibilityLevel.SENSOR_CONTACT.ordinal) continue
+            if (!iterFleet.isStationMode && fleet.getVisibilityLevelTo(iterFleet).ordinal <= SectorEntityToken.VisibilityLevel.SENSOR_CONTACT.ordinal) continue
             if (iterFleet.memoryWithoutUpdate[MemFlags.FLEET_IGNORES_OTHER_FLEETS] == true || iterFleet.memoryWithoutUpdate[MemFlags.MEMORY_KEY_FLEET_DO_NOT_GET_SIDETRACKED] == true) continue
             if (!hostile && iterFleet == fleet) continue
             if (!hostile && iterFleet == target) continue

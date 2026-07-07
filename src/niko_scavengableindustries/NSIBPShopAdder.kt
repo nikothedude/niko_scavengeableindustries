@@ -69,7 +69,7 @@ class NSIBPShopAdder: BaseCampaignEventListener(false) {
             picker.add(entry.id, entry.sellWeight)
             totalWeight += weight
         }
-        picker.add("nothing", totalWeight * 10f)
+        picker.add("nothing", totalWeight * 100f)
 
         while (picksLeft-- > 0f) {
             val picked = picker.pick()

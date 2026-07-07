@@ -21,6 +21,8 @@ import com.fs.starfarer.api.impl.campaign.ids.Factions
 import com.fs.starfarer.api.impl.campaign.ids.FleetTypes
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags
 import com.fs.starfarer.api.impl.campaign.ids.Stats
+import com.fs.starfarer.api.impl.campaign.intel.events.HostileActivityEventIntel
+import com.fs.starfarer.api.impl.campaign.intel.events.HostileActivityManager
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
@@ -42,7 +44,7 @@ class SpyBureau: BaseIndustry(), FleetEventListener, EconomyTickListener {
     companion object {
         const val SENSOR_MULT = 0.5f
         const val DESTROYED_RESPAWN_TIME = 30f // days - bonus on top of usual delay
-        const val TIME_BETWEEN_FLEET_SPAWNS = 20f
+        const val TIME_BETWEEN_FLEET_SPAWNS = 12f
         const val MAX_FLEETS = 3
         const val COMBAT_POINTS = 120f
         const val SELF_STABILITY_BONUS_INCR = 2
@@ -313,6 +315,34 @@ class SpyBureau: BaseIndustry(), FleetEventListener, EconomyTickListener {
             "Only one ${spec.name} can exist at a time.",
             10f
         )
+    }
+
+    fun getHAMult(): Float {
+        val deficitMult = getDeficitMult(
+            Commodities.DRUGS,
+            Commodities.SHIPS,
+            Commodities.SUPPLIES,
+            Commodities.CREW
+        )
+
+        val decrement = (0.1f * market.size).coerceAtMost(0.5f)
+        val final = 1f - (decrement * deficitMult)
+
+        return final
+    }
+
+    fun getHAMultString(): String {
+        val mult = getHAMult()
+
+        val deficitMult = getDeficitMult(
+            Commodities.DRUGS,
+            Commodities.SHIPS,
+            Commodities.SUPPLIES,
+            Commodities.CREW
+        )
+
+        val bonus = if (deficitMult < 1f) " (Reduced by shortages)" else ""
+        return "${toPercent(1f - mult)}$bonus"
     }
 
     fun isSuperceded(): Boolean {

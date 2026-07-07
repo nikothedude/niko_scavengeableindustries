@@ -125,7 +125,7 @@ class ExpertDockworks: BaseIndustry() {
                     "The installed nanoforge is %s.",
                     10f,
                     Misc.getHighlightColor(),
-                    "adequete"
+                    "adequate"
                 )
             }
         }

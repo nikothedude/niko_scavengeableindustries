@@ -29,7 +29,7 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
         val BAD_WARNING_COLOR = Color(255, 90, 50)
 
         const val PROX_DETONATION = 50f
-        const val INACCURACY_INCR = 1500f
+        const val INACCURACY_INCR = 2250f
         const val THREAT_INDICATOR_WEAPON_ID = "NSI_flakThreatIndicator"
     }
 
@@ -86,8 +86,8 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
     }
 
     fun getExplosionSpec(): DamagingExplosionSpec {
-        var damage = 3000f
-        var minDamage = 1000f
+        var damage = 2000f
+        var minDamage = 350f
         if (ind.aiCoreId == Commodities.ALPHA_CORE) {
             damage *= ASBUplinkTerrain.ALPHA_DAMAGE_MULT
             minDamage *= ASBUplinkTerrain.ALPHA_DAMAGE_MULT
@@ -96,8 +96,8 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
         minDamage *= terrain.getIndustryParams().damageCoeff
         val spec = DamagingExplosionSpec(
             0.1f,
-            1000f,
-            600f,
+            900f,
+            250f,
             damage,
             minDamage,
             CollisionClass.PROJECTILE_NO_FF,
@@ -112,6 +112,7 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
         spec.isUseDetailedExplosion = true
         spec.soundSetId = "mine_explosion"
         spec.damageType = DamageType.HIGH_EXPLOSIVE
+        spec.detailedExplosionRadius = spec.radius * 2f
         return spec
     }
 

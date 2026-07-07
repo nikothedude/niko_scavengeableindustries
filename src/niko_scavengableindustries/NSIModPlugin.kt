@@ -7,6 +7,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Items
 import com.fs.starfarer.api.impl.campaign.intel.events.HostileActivityEventIntel
 import lunalib.lunaSettings.LunaSettings
 import lunalib.lunaSettings.LunaSettingsListener
+import niko_scavengableindustries.industries.SpyBureau.SpyBureauDefenseFactor
 
 class NSIModPlugin : BaseModPlugin() {
 
@@ -33,7 +34,6 @@ class NSIModPlugin : BaseModPlugin() {
        * It is most useful for loading data that only really needs to be setup once. */
     @Throws(Exception::class)
     override fun onApplicationLoad() {
-
         Global.getSettings().getSpecialItemSpec(Items.PLASMA_DYNAMO).params += ", NSI_nebulaSiphoner"
 
         for (spec in Global.getSettings().allSpecialItemSpecs) {
@@ -62,7 +62,20 @@ class NSIModPlugin : BaseModPlugin() {
         NSISettings.loadSettings()
 
         Global.getSector().addTransientListener(NSIBPShopAdder())
-        Global.getSector().listenerManager.addListener(NSILootListener(), false)
+        for (listener in Global.getSector().listenerManager.getListeners(NSILootListener::class.java).toSet()) {
+            Global.getSector().listenerManager.removeListener(listener)
+            // TODO remove later
+        }
+        Global.getSector().listenerManager.addListener(NSILootListener(), true)
+        Global.getSector().listenerManager.addListener(NSIHAFactorAdder(), true)
+    }
+
+    class NSIHAFactorAdder: ColonyCrisesSetupListener {
+        override fun finishedAddingCrisisFactors(intel: HostileActivityEventIntel?) {
+            if (intel == null) return
+
+            intel.addFactor(SpyBureauDefenseFactor())
+        }
     }
 
     /*Runs when a save is created.

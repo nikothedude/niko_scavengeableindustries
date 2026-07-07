@@ -1,3 +1,16 @@
+0.2.2
+
+Fixed a typo in innovation shipworks
+Fixed a bug with STC districts showing blurbs when inappropiate
+
+Reduced sell freq of bps
+
+Spy bureau spawns fleets fsater
+Improved spy fleet AI
+Spy bureau now adds a 0.5x crisis mult (NOT save compatible)
+Training grounds now accepts military markets
+ASB Uplink combat performance nerfed
+
 0.2.1
 
 Fixes a crash without MCTE

@@ -13,6 +13,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Stats
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
 import niko_scavengableindustries.utils.StringUtils.toPercent
+import org.magiclib.kotlin.isMilitary
 
 /// Trains marines stationed on the planet. Ground defense bonus (Minor). Expensive. (Officers you get from this planet are higher level?)
 class TrainingCamp: BaseIndustry() {
@@ -73,8 +74,16 @@ class TrainingCamp: BaseIndustry() {
             if (aiCoreId == Commodities.ALPHA_CORE) extraMult += ALPHA_CORE_TRAINING_MULT
             if (isImproved) extraMult += IMPROVED_TRANING_MULT
 
+            val shortageMult = getDeficitMult(
+                Commodities.FUEL,
+                Commodities.SUPPLIES,
+                Commodities.CREW,
+                Commodities.SHIPS,
+                Commodities.HAND_WEAPONS
+            )
+
             exp.data.num = marines.size
-            exp.data.addXP(0.01f * amount * extraMult)
+            exp.data.addXP((0.01f * amount * extraMult) * shortageMult)
             exp.data.clampXP()
         }
 
@@ -175,14 +184,14 @@ class TrainingCamp: BaseIndustry() {
 
     override fun isAvailableToBuild(): Boolean {
         if (!market.faction.knowsIndustry(spec.id)) return false
-        if (market.industries.none { it !is TrainingCamp && it.spec.hasTag(Industries.TAG_MILITARY) }) return false
+        if (!market.isMilitary()) return false
 
         return super.isAvailableToBuild
     }
 
     override fun getUnavailableReason(): String? {
         if (!market.faction.knowsIndustry(spec.id)) return "YOU SHOULDNT SEE THIS AT ALL"
-        if (market.industries.none { it !is TrainingCamp && it.spec.hasTag(Industries.TAG_MILITARY) }) return "Requires a military presence"
+        if (!market.isMilitary()) return "Requires a military presence"
 
         return super.unavailableReason
     }
