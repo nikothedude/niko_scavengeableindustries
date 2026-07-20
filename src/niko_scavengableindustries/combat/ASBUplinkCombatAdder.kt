@@ -27,6 +27,7 @@ class ASBUplinkCombatAdder: BaseEveryFrameCombatPlugin() {
     private fun attemptToAddASBs() {
         val playerFleet = Global.getSector()?.playerFleet ?: return
         val playerLocation = playerFleet.containingLocation ?: return
+        if (playerFleet.battle == null) return
 
         val asbTerrain = playerLocation.terrainCopy.filter { it.plugin is ASBUplinkTerrain }.map { it.plugin } as List<ASBUplinkTerrain>
         if (asbTerrain.isEmpty()) return

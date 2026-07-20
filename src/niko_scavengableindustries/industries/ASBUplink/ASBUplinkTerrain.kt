@@ -28,6 +28,7 @@ import niko_scavengableindustries.utils.StringUtils.toPercent
 import org.lazywizard.lazylib.MathUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.vector.Vector2f
+import org.magiclib.kotlin.addEntity
 import org.magiclib.kotlin.applyDamage
 import java.awt.Color
 import java.util.*
@@ -172,6 +173,12 @@ class ASBUplinkTerrain: BaseRingTerrain() {
 
     override fun advance(amount: Float) {
         super.advance(amount)
+
+        val market = getMarket()
+        if (entity.containingLocation != market.primaryEntity.containingLocation) {
+            entity.containingLocation.removeEntity(entity)
+            market.primaryEntity.containingLocation.addEntity(entity)
+        }
 
         val days = Misc.getDays(amount)
         val shortageMult = getCastedParams().industry.getShortagesForTerrain()

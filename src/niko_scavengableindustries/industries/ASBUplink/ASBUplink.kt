@@ -1,5 +1,6 @@
 package niko_scavengableindustries.industries.ASBUplink
 
+import com.fs.starfarer.api.EveryFrameScript
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.CampaignTerrainAPI
 import com.fs.starfarer.api.campaign.econ.Industry
@@ -11,7 +12,10 @@ import com.fs.starfarer.api.impl.campaign.ids.Commodities
 import com.fs.starfarer.api.impl.campaign.ids.Industries
 import com.fs.starfarer.api.impl.campaign.ids.Stats
 import com.fs.starfarer.api.ui.TooltipMakerAPI
+import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
+import data.scripts.DelayedExecution
+import niko_scavengableindustries.NSISettings
 import niko_scavengableindustries.industries.BlastCoreMining.Companion.ALPHA_INCR
 import niko_scavengableindustries.industries.BlastCoreMining.Companion.IMPROVED_INCR
 import niko_scavengableindustries.utils.StringUtils.toPercent
@@ -46,22 +50,18 @@ class ASBUplink: BaseIndustry() {
         market.stats.dynamic.getMod(Stats.GROUND_DEFENSES_MOD).modifyMult(id, GROUND_DEFENSE_MULT, "$nameForModifier$bonusText")
     }
 
-    var reapplying = false
-    override fun reapply() {
-        reapplying = true
-        super.reapply()
-        reapplying = false
-    }
-
     override fun unapply() {
         super.unapply()
 
-        if (!reapplying) {
-            if (terrain != null) {
-                market.containingLocation?.removeEntity(terrain?.entity)
-                terrain = null
+        class DelayedRemovalScript: DelayedExecution(IntervalUtil(0f, 0f), useDays = false, runIfPaused = true) {
+            override fun executeImpl() {
+                if (!market.hasIndustry(spec.id)) {
+                    market.containingLocation?.removeEntity(terrain?.entity)
+                    terrain = null
+                }
             }
         }
+        DelayedRemovalScript().start()
 
         market.stats.dynamic.getMod(Stats.GROUND_DEFENSES_MOD).unmodify(id)
     }
@@ -143,6 +143,15 @@ class ASBUplink: BaseIndustry() {
                 Misc.getPositiveHighlightColor(),
                 "Higher tier defenses"
             )
+
+            if (NSISettings.indEvoEnabled) {
+                tooltip.addPara(
+                    "If you had a way to %s, the cannons could be used as a %s.",
+                    10f,
+                    Misc.getHighlightColor(),
+                    "move your colony", "mobile assault platform"
+                )
+            }
         }
 
         if (mode != IndustryTooltipMode.NORMAL || isFunctional) {

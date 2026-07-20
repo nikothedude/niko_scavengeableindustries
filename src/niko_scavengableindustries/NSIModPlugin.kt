@@ -7,6 +7,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Items
 import com.fs.starfarer.api.impl.campaign.intel.events.HostileActivityEventIntel
 import lunalib.lunaSettings.LunaSettings
 import lunalib.lunaSettings.LunaSettingsListener
+import niko_scavengableindustries.industries.NSICryosanctum
 import niko_scavengableindustries.industries.SpyBureau.SpyBureauDefenseFactor
 
 class NSIModPlugin : BaseModPlugin() {
@@ -75,6 +76,7 @@ class NSIModPlugin : BaseModPlugin() {
             if (intel == null) return
 
             intel.addFactor(SpyBureauDefenseFactor())
+            //intel.addActivity(NSICryosanctum.CrisisFactor(), NSICryosanctum.CrisisCause()) // TODO
         }
     }
 
@@ -95,5 +97,10 @@ class NSIModPlugin : BaseModPlugin() {
 
     override fun onNewGameAfterTimePass() {
         setupFactionIndustryKnowledge()
+    }
+
+    override fun onAboutToLinkCodexEntries() {
+        super.onAboutToLinkCodexEntries()
+        CodexData.linkCodexEntries()
     }
 }
