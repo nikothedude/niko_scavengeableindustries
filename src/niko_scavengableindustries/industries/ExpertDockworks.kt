@@ -163,7 +163,7 @@ class ExpertDockworks: BaseIndustry() {
             if (fleet.faction.id != dockworks.market.faction.id) return
             if (!dockworks.isPrimaryHeavyIndustry()) return
             val mult = dockworks.getOurDeficitMult()
-            if (prob(1 - mult)) return
+            if (prob(100f - (mult * 100f))) return
 
             if (!dockworks.isImproved && !(fleet.isPatrol() || fleet.isWarFleet())) return
             if (inflater.removeAfterInflating() && dockworks.aiCoreId != Commodities.ALPHA_CORE) return
