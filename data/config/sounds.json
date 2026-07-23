@@ -1,0 +1,12 @@
+{
+	"NSIshield_lower":{
+		"sounds":[
+			{"file":"sounds/sfx_shields/shields_down_large.ogg","pitch":1,"volume":0.4},
+		],
+	},
+	"NSIshield_raise":{
+		"sounds":[
+			{"file":"sounds/sfx_shields/shields_up_large.ogg","pitch":1,"volume":1},
+		],
+	},	
+}

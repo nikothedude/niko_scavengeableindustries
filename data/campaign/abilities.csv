@@ -1,0 +1,2 @@
+name,id,type,tags,activationDays,activationCooldown,durationDays,deactivationDays,deactivationCooldown,unlockedAtStart,defaultForAIFleet,musicSuppression,uiOn,uiOff,uiLoop,worldOn,worldOff,worldLoop,icon,plugin,ai,desc,sortOrder
+Fleetshield,NSI_fleetshield,TOGGLE,"codex_unlockable, stealth-",0.05,,,0.05,,TRUE,,0.75,,,,,,,graphics/hullmods/front_shield_emitter.png,niko_scavengableindustries.abilities.NSIFleetshieldAbility,,todo,10001
