@@ -1,2 +1,4 @@
 fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
-NSI_LockIndEvoStructures,Lock Ind.Evo structures,Boolean,false,," (DISABLED TIL PATCHLIB RELEASE & FR COMPAT) If true, indevo structures are added to the list of findable industries and are removed from your default list of industries.",,,
+NSI_firstHeader,,Header,Settings that lock structures increase blueprint spawn rate.,,,,,
+NSI_LockIndEvoStructures,Lock Ind.Evo structures,Boolean,false,,"(REQUIRES PATCHLIB) If true, indevo structures are added to the list of findable industries and are removed from your default list of industries.",,,
+NSI_LockVanillaStructures,Lock Vanilla structures,Boolean,false,,"(REQUIRES PATCHLIB) If true, most vanilla structures are added to the list of findable industries and are removed from your default list of industries. WARNING: You will not be able to make most structures with this enabled!",,,

@@ -8,31 +8,39 @@ import kotlin.collections.set
 object NSISettings {
 
     var indEvoEnabled = false
+    var patchLibEnabled = false
+
     var lockIndEvo = false
+    var lockVanilla = false
 
     val industrySpecs = HashMap<String, IndustryGenSpec>()
     val TEMP_FLAGS = HashSet<String>()
 
-    const val DROP_MULT_PER_DROPPABLE = 0.05f
+    const val DROP_MULT_PER_DROPPABLE = 0.1f
 
     fun loadSettings() {
         getEnabledMods()
 
-        lockIndEvo = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
+        lockIndEvo = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
+        lockVanilla = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
 
         lockModStructures()
         loadGenDataFromCSV()
     }
 
     private fun lockModStructures() {
-        if (indEvoEnabled && lockIndEvo) {
+        if (patchLibEnabled && indEvoEnabled && lockIndEvo) {
             TEMP_FLAGS += "LOCK_INDEVO"
+        }
+        if (lockVanilla) {
+            TEMP_FLAGS += "LOCK_VANILLA"
         }
     }
 
     fun getEnabledMods() {
         val manager = Global.getSettings().modManager ?: return
         indEvoEnabled = manager.isModEnabled("IndEvo")
+        patchLibEnabled = manager.isModEnabled("patchlib")
     }
 
     fun loadGenDataFromCSV() {
@@ -88,6 +96,7 @@ object NSISettings {
             }
 
             val discoveryString = row.optString("discovery_text") ?: ""
+            val upgradeTo = row.optString("upgrade_to") ?: ""
 
             val spec = IndustryGenSpec(
                 id,
@@ -96,7 +105,8 @@ object NSISettings {
                 reqModIds,
                 reqFlags,
                 knownBy,
-                discoveryString
+                discoveryString,
+                upgradeTo
             )
             industrySpecs[id] = spec
         }

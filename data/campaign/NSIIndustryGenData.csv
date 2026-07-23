@@ -1,41 +1,87 @@
-id,drop_weight,sell_weight,req_mod_ids,req_flags,known_by,discovery_text
+id,drop_weight,sell_weight,req_mod_ids,req_flags,upgrade_to,known_by,discovery_text
 #EXAMPLE,"if 0, never drops from loot","if 0, never sold by factions","separated by commas
 if a modid listed here is not loaded, the augment is not added","separated by commas
-checks to see if weve enabled our mod's limiting in config","separated by commas
+checks to see if weve enabled our mod's limiting in config",ind id. will be much less likely to generate if the req. ind isnt known,"separated by commas
 faction ids, only applied on new game",text entered here is appended to the blueprint
-NSI_constructionAcceleratorIndustry,100,100,,,"mercenary, scavengers","This type of infrastructure was well-used in the initial colonization rush of the sector. Unfortunately, the exact methods, policies, and equipment needed for such rampant expansion was too disorganized to fall onto a standardized blueprint... until now. Now, you can replicate the gold rush of ages past."
-NSI_cryosanctum,50,0,,,"independent, mercenary","A decidely post-collapse invention, the Cryosanctum of Nomios was long considered the  only sanctum in the sector - til now. It would seem more polities than just Nomios had the same idea, as this spec proudly declares.
+NSI_constructionAcceleratorIndustry,100,100,,,,"mercenary, scavengers","This type of infrastructure was well-used in the initial colonization rush of the sector. Unfortunately, the exact methods, policies, and equipment needed for such rampant expansion was too disorganized to fall onto a standardized blueprint... until now. Now, you can replicate the gold rush of ages past."
+NSI_cryosanctum,50,0,,,,"independent, mercenary","A decidely post-collapse invention, the Cryosanctum of Nomios was long considered the  only sanctum in the sector - til now. It would seem more polities than just Nomios had the same idea, as this spec proudly declares.
 
 Interesting, you note a secondary system - not on any public records - of some sort of removal system behind the pods, and an elaborate medlab labelled ""harvesting"" beneath the complex. Perhaps the intent was never so benevolent."
-NSI_trainingGrounds,100,20,,,"hegemony, mercenary","While any military base can teach a man how to hold a gun and wear power armor, the Domain took it an extra step by forcefully acquainting new recruits with their to-be commander's commanding style through a ""secondary school"" - a grueling multi-cycle process of combat sim after combat sim, each more immersive than the last. 
+NSI_trainingGrounds,100,20,,,,"hegemony, mercenary","While any military base can teach a man how to hold a gun and wear power armor, the Domain took it an extra step by forcefully acquainting new recruits with their to-be commander's commanding style through a ""secondary school"" - a grueling multi-cycle process of combat sim after combat sim, each more immersive than the last. 
 
 By the end, recruits aren't even aware of the fact they were in training - it just felt like another mission.
 
 The specs you've found teach how to execute this form of training, as well as how to construct the requisite equipment."
-NSI_nebulaSiphoner,100,100,,,"mercenary, scavengers","A long-lost art. Nebula skimming is overall less efficient, more expensive, far more complicated and far less reliable than deep-core mining, relying on planetary position to strike any meaningful profit. Still, it has its use - not every system-bound polity will have access to volatiles, and while this problem was largely solved with the gate network, the problem rears its head yet again."
-NSI_expertDockworks,100,100,,,"mercenary, scavengers, tritachyon","The spec contained on this chip is less of a single megastructure, and more a list of engineering, leadership, and technological principles that would enable large-scale second-pass refinement suitable for nation-state deployment. The requested materials are as staggering as they are strict, but Mbaye-Gogol was not known for their fast-and-loose methodology to shipbuilding. Perhaps its best to go by their word."
-NSI_STCDistrict,100,100,,,"mercenary, scavengers","Seen rarely in the persean sector, even pre-collapse, STC centers were used to coordinate vast swaths of interstellar traffic and avoid gridlock. Being so infrequently used its no surprise its specs were lost to time, but seeing the staggering technological requirements firsthand - you may also see a second reason."
-NSI_SpyBureau,50,50,,,mercenary,"Shockingly, this blueprint seems to be sourced directly from the Domain itself. While likely heavily outdated, it is a collection of notes, anecdotes, examples and blueprints for various espionage and counterintelligance structures in both physicality and society. And while the cost is steep, the projected outcome - that being, a hand in the entire sector's pockets - may be indeed worth it."
-NSI_blastCoreMining,100,100,,,"mercenary, scavengers","This spec appears to be a rudimentary industrial procedure document detailing the yield, placement, and composition of nuclear weaponry to be used in deep-core mining to produce ""fantastic"" output. It only briefly touches on the debilitating impacts of such an action."
-NSI_ASBUplink,50,50,,,"mercenary, scavengers, persean","Rarely documented, these flak complexes were only ever really used on Domain fortress worlds, where they conducted business, research, and generally kept things they wished noone to ever see.
+NSI_nebulaSiphoner,100,100,,,,"mercenary, scavengers","A long-lost art. Nebula skimming is overall less efficient, more expensive, far more complicated and far less reliable than deep-core mining, relying on planetary position to strike any meaningful profit. Still, it has its use - not every system-bound polity will have access to volatiles, and while this problem was largely solved with the gate network, the problem rears its head yet again."
+NSI_expertDockworks,100,100,,,,"mercenary, scavengers, tritachyon","The spec contained on this chip is less of a single megastructure, and more a list of engineering, leadership, and technological principles that would enable large-scale second-pass refinement suitable for nation-state deployment. The requested materials are as staggering as they are strict, but Mbaye-Gogol was not known for their fast-and-loose methodology to shipbuilding. Perhaps its best to go by their word."
+NSI_STCDistrict,100,100,,,,"mercenary, scavengers","Seen rarely in the persean sector, even pre-collapse, STC centers were used to coordinate vast swaths of interstellar traffic and avoid gridlock. Being so infrequently used its no surprise its specs were lost to time, but seeing the staggering technological requirements firsthand - you may also see a second reason."
+NSI_SpyBureau,50,50,,,,mercenary,"Shockingly, this blueprint seems to be sourced directly from the Domain itself. While likely heavily outdated, it is a collection of notes, anecdotes, examples and blueprints for various espionage and counterintelligance structures in both physicality and society. And while the cost is steep, the projected outcome - that being, a hand in the entire sector's pockets - may be indeed worth it."
+NSI_blastCoreMining,100,100,,,,"mercenary, scavengers","This spec appears to be a rudimentary industrial procedure document detailing the yield, placement, and composition of nuclear weaponry to be used in deep-core mining to produce ""fantastic"" output. It only briefly touches on the debilitating impacts of such an action."
+NSI_ASBUplink,50,50,,,,"mercenary, scavengers, persean","Rarely documented, these flak complexes were only ever really used on Domain fortress worlds, where they conducted business, research, and generally kept things they wished noone to ever see.
 
 A staggering piece of military equipment, the flak cannon listed in this spec is at least as big as a city, and capable of levelling a mountain. Unfortunately for you, its uses outside planet defense seems to be limited by DRM in the included software."
-,,,,,,
-#IndEvo - off by default,,,,,,
-IndEvo_AdAssem,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers",
-IndEvo_ComArray,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent, tritachyon",
-IndEvo_IntArray,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_AdInfra,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_ScrapYard,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent, hegemony",
-IndEvo_SupCom,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, tritachyon",
-IndEvo_embassy,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_senate,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_dryDock,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_Academy,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, hegemony",
-IndEvo_ReqCenter,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_EngHub,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent, tritachyon",
-IndEvo_PrivatePort,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_PetStore,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_Museum,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_Warehouse,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, independent",
-IndEvo_pirateHaven,100,100,IndEvo,LOCK_INDEVO,"mercenary, scavengers, pirate",
+NSI_luddicMonument,50,100,patchlib,,,"mercenary, luddic_church, luddic_path","A collection of notes, similarities, and comparisons between the popular Luddic Shrines across the sector. Taken together, it becomes a list of traits that promise to attract the faithful from all edges of space. And while expensive, is nearly a necessity if you wish to perform ""unsavory"" acts while remaining in the good graces of your flock."
+,,,,,,,
+#IndEvo - off by default,,,,,,,
+IndEvo_AdAssem,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, tritachyon","A decidely Tri-Tachyon invention, the Variable Assembler was sort of like the Cartridge Coffee Maker of industry. The corporation would sell customers without the ability to produce certain items a fairly cheap blueprint for an assembler, and then a prohibitively expensive chip for its ingredients. It rapidly became a success, including in the Persean Sector.
+
+Now, the corporation lacks its ability to produce either, resulting in the only existing assemblers being relics, or built via lost blueprints. And while some blueprints may exist... the secret behind the chip is lost forever to time."
+IndEvo_AdManuf,100,100,IndEvo,LOCK_INDEVO,IndEvo_AdAssem,"mercenary, scavengers, tritachyon","While the Variable Assembler is rather small-scale, only demanding a few kilometers in size, this gargantuan factory unlocks the true potential hidden behind the Tri-Tachyon Variable Production Chips. Capable of outproducing even purpose-dedicated industries at its peak, this behemoth promises industrial supremacy if you would just so kindly purchase a few Tri-Tachyon (tm) production chips (tm)."
+IndEvo_ComArray,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent, tritachyon","A dedicated, military-only comm system requires significantly less overhead than a typical comm relay, especially if one uses this original Ko Combine spec sold only to a few sparse bidders. Capable of transmitting fleet movements and new orders in a blink of an eye, this decentralizes military command in a way thought only possible to the Domain."
+IndEvo_IntArray,100,100,IndEvo,LOCK_INDEVO,IndEvo_ComArray,"mercenary, scavengers, independent, tritachyon","While it is commonly believed comm relays require total isolation from hyperwave distortion, this is only true for the low-maintenance and high-bandwidth relays cheaply employed by most of the sector. Its no surprise why most choose this - any alternative is lost to time, and would be prohibitively expensive to maintain, isolate, and drive.
+
+Even with this Ko Combine original spec, you find yourself doubting the efficacy, given what it would cost to employ it. And yet... maybe."
+IndEvo_AdInfra,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent","A remarkable achievement of beuracracy. Popular in particuarly busy parts of the domain, the Bureau was used to coordinate vast swaths of material in and out of a centralized trade world, maximizing its efficiency while keeping the output and income of the extraction worlds untouched - a doctrine perfect for the Domain. And for you, too - perhaps even better, given how you do not find your need for the nation-state ideology."
+IndEvo_ScrapYard,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent, hegemony","Scrap yards exist, yes, but rarely to this extent. Popular in the fringes of the Domain back in ages past, the so-called ""Megayard"" is a centralized point for all wrecks in the system to be towed, torn down, and reused. It is nothing like the simple scrapyards of Nova Maxios, for example - its ships being locally sourced."
+IndEvo_SupCom,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, tritachyon","The IRIL-2391 Trade Computer was a gargantuan invention, in its time. A megastructure in name and build, this Nvidia(Tm) SuperCalculator(Tm) was made for one purpose and one purpose only.
+
+Stock trading.
+
+Now, without much of a stock market to speak of, this gigacomputer can only be used for optimizing trade, bargaining, and maximizing trade throughput. Thankfully, you don't need to replace its thermal paste. Just feed it artificial intelligence to kill."
+IndEvo_senate,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent","Rather than a structure, this is a paradigm for a bespoke political structure to be deeply integrated into every world you control. Resembling an ancient civilization lost to time, a communion of peers, ultimately subservient to you, would allow for dynamic policy-making for each micro-problem a world could possibly have, allowing a level of micromanagement unobtainable by simple word-of-dictator. With this, likely a spec written by a similarly fallen civilization, you could institute edicts, taxes, policies... everything a dictator truely needs."
+IndEvo_dryDock,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent","While many ""Dry Docks"" existed in the core worlds, few ever took it to this extent. This disorganized spec seems to contain guidelines for restoration processes, alternative part sources, and tips and tricks for all the ships in the sector. DRM free, it's a wonder this kitbashed spec hasn't fallen into the hands of the entire sector by now. Or perhaps its viewed as simply... impractical?"
+IndEvo_Academy,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, hegemony","Domain military school has always been brutal, but the exact teaching methods have been lost to time. Until now.
+
+While the Hegemony, the League, the Galatian Academy have their own teaching regiments, they are exceedingly difficult to replicate in any meaningful way without a doctrine if your own. But here, in this chip, lies a recollection - a recollection of an ancient ciricullum used by none other than the Domain Fleet itself. Here, boys are made men, girls are made women, and anything between is given a cap and a pistol and drilled relentlessly on command, starfaring, and military might."
+IndEvo_ReqCenter,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent","Endless warehouses, ports, docks, embassies, ambassadors - a centralized hub for you and your allies to share weaponry and ideas."
+IndEvo_EngHub,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent, tritachyon","A decidely Post-Collapse invention, this rarity has only been seen a few times in the entire history of the sector, and only by the strongest of the soon-to-die empires. Without DRM, without the Domain looking over them, and without INTSEC's ridiculous counterintelligence, factions after the Collapse were able to freely conduct espionage on their enemies. This is one such attempt.
+
+In this spec is a list of protocols, ideas, and dockyards for one purpose and one purpose only - intelligence theft. Stocked with the best engineers credits can buy, this spec promises to allow you to unlock the secrets of vessels you could not otherwise produce - provided you find a few test subjects, of course."
+IndEvo_PrivatePort,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent",
+IndEvo_PetStore,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent","An authentic PACG pet store blueprint, likely lost in some terrible incident. With this, and a bit of elbow grease, you too could open a branch..."
+IndEvo_Museum,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent",
+IndEvo_Warehouse,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent","Few would ever take storage to this level, and much fewer neurotypical. It would appear at least one or another individual in the past became so obsessed with storage that they decided the best course of action...
+
+Would be to create massive, city-level warehouses that can store anything and whatever you wish. It is certainly a better solution than one large hangar in the middle of nowhere. The question is... is it worth it?
+
+You consider an definite ""maybe""."
+IndEvo_pirateHaven,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, pirate","Created once by the Pirate Lord Loth, this is the roughly-worded and badly-drawn spec of an entire planetary industry dedicated to criminality, raiding, and seedy warfare. Massive concourses with raid-screens, blaring war-info, troop movements, and other sensitive espionage to thousands of volunteer raiders, offering large cuts in exchange for their irregularity.
+
+A substantial portion of this spec is also dedicated to crowd control. An entirely secondary system is written here - intense survellience, massive guard retinues, and titanic walls to keep the rest of the colony safe from these raving raiders. You estimate such an undertaking would be a logistical nightmare - but something you, and only you, could possibly pull off."
+,,,,,,,
+#Vanilla - off by default,,,,,,,
+megaport,150,400,,LOCK_VANILLA,spaceport,standard,
+orbitalstation,100,300,,LOCK_VANILLA,,standard,
+battlestation,100,300,,LOCK_VANILLA,orbitalstation,standard,
+starfortress,100,300,,LOCK_VANILLA,battlestation,standard,
+orbitalstation_mid,100,300,,LOCK_VANILLA,,standard,
+battlestation_mid,100,300,,LOCK_VANILLA,orbitalstation_mid,standard,
+starfortress_mid,100,300,,LOCK_VANILLA,battlestation_mid,standard,
+orbitalstation_high,100,300,,LOCK_VANILLA,,standard,
+battlestation_high,100,300,,LOCK_VANILLA,orbitalstation_high,standard,
+starfortress_high,100,300,,LOCK_VANILLA,battlestation_high,standard,
+commerce,100,300,,LOCK_VANILLA,,standard,
+waystation,100,300,,LOCK_VANILLA,,standard,
+fuelprod,100,300,,LOCK_VANILLA,,"diktat, hegemony",
+patrolhq,150,400,,LOCK_VANILLA,,standard,
+militarybase,100,300,,LOCK_VANILLA,patrolhq,standard,
+highcommand,100,300,,LOCK_VANILLA,militarybase,"hegemony, persean",
+,,300,,,,,
+techmining,100,300,,LOCK_VANILLA,,standard,
+,,300,,,,,
+lightindustry,100,300,,LOCK_VANILLA,,standard,
+heavyindustry,150,300,,LOCK_VANILLA,,standard,
+orbitalworks,100,300,,LOCK_VANILLA,heavyindustry,standard,
+aquaculture,100,300,,LOCK_VANILLA,,"diktat, hegemony, persean",
+,,300,,,,,
+heavybatteries,150,300,,LOCK_VANILLA,grounddefenses,standard,

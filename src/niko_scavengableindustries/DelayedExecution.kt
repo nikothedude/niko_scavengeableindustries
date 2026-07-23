@@ -30,7 +30,7 @@ abstract class DelayedExecution(
         }
     }
 
-    open fun execute() {
+    private fun execute() {
         executeImpl()
         delete()
     }

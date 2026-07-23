@@ -9,6 +9,7 @@ import com.fs.starfarer.api.campaign.econ.SubmarketAPI
 import com.fs.starfarer.api.campaign.impl.items.IndustryBlueprintItemPlugin
 import com.fs.starfarer.api.impl.campaign.econ.impl.BaseIndustry
 import com.fs.starfarer.api.impl.campaign.ids.Industries
+import com.fs.starfarer.api.loading.IndustrySpecAPI
 import com.fs.starfarer.api.ui.Alignment
 import com.fs.starfarer.api.ui.TooltipMakerAPI
 import com.fs.starfarer.api.util.Misc
@@ -33,7 +34,10 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
 
             var weight: Float = data.weight
             if (Global.getSector().playerFaction.knownIndustries.contains(id)) {
-                weight *= 0.5f
+                weight *= 0.1f
+            }
+            if (data.upgradeTo.isNotEmpty() && NSISettings.industrySpecs[data.upgradeTo] != null && !Global.getSector().playerFaction.knowsIndustry(data.upgradeTo)) {
+                weight *= 0.1f
             }
             if (weight > 0) {
                 picker.add(Pair(id, data), weight)
@@ -50,12 +54,19 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
         industry = Global.getSettings().getIndustrySpec(indId)
     }
 
+    var beingBought = false
     override fun getPrice(market: MarketAPI?, submarket: SubmarketAPI?): Int {
         var price = super.getPrice(market, submarket)
 
-        price = (price * 0.25f).roundToInt()
+        var cap = 70000
+        var mult = 0.25f
+        if (beingBought) {
+            cap = Int.MAX_VALUE
+            mult = 0.5f
+        }
 
-        return price.coerceAtMost(100000)
+        price = (price * mult).roundToInt()
+        return price.coerceAtMost(cap)
     }
 
     override fun createTooltip(
@@ -73,18 +84,30 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
 
         tooltip!!.addTitle(industry.name, Misc.getHighlightColor())
         tooltip.addPara(industry.desc, opad)
+
         val spec = NSISettings.industrySpecs[industryId]
         if (spec != null) {
-            tooltip.addSectionHeading(
-                "Discovery",
-                Alignment.MID,
-                opad
-            )
+            if (spec.upgradeTo.isNotEmpty()) {
+                val upgradesFromSpec = Global.getSettings().getIndustrySpec(spec.upgradeTo)
+                tooltip.addPara(
+                    "Upgrades from %s",
+                    opad,
+                    Misc.getHighlightColor(),
+                    "${upgradesFromSpec.name}"
+                ).color = Misc.getGrayColor()
+            }
+            if (spec.discoveryString.isNotEmpty()) {
+                tooltip.addSectionHeading(
+                    "Discovery",
+                    Alignment.MID,
+                    opad
+                )
 
-            tooltip.addPara(
-                spec.discoveryString,
-                opad
-            )
+                tooltip.addPara(
+                    spec.discoveryString,
+                    opad
+                )
+            }
         }
 
         addCostLabel(tooltip, opad, transferHandler, stackSource)
@@ -96,4 +119,5 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
         }
     }
 
+    fun getInd(): IndustrySpecAPI? = industry
 }

@@ -1,4 +1,21 @@
+0.3.0
+PROBABLY SAVE COMPATIBLE
 
+Fixed a bug with deficits and innovation shipworks
+Fixed ASB terrain not moving with rift gen
+
+Patchlib soft required now
+
+Enabled indevo lock option
+Added vanilla lock option
+
+New industry - Artificial Shrine
+    Makes luddic majority still be active even if you have mining and such as long as pather interest is at or below 10
+    Also improves immigration rate
+
+Improved scaling math for shop and droprate
+
+Industry BPs now cost a ton more if buying them from a shop
 
 0.2.2
 

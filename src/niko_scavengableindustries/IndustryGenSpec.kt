@@ -7,6 +7,7 @@ data class IndustryGenSpec(
     val reqModIds: HashSet<String>,
     val reqFlags: HashSet<String>,
     val knownBy: HashSet<String>,
-    val discoveryString: String
+    val discoveryString: String,
+    val upgradeTo: String
 ) {
 }

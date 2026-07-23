@@ -3,6 +3,7 @@ package niko_scavengableindustries
 import com.fs.starfarer.api.BaseModPlugin
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.listeners.ColonyCrisesSetupListener
+import com.fs.starfarer.api.impl.campaign.ids.Factions
 import com.fs.starfarer.api.impl.campaign.ids.Items
 import com.fs.starfarer.api.impl.campaign.intel.events.HostileActivityEventIntel
 import lunalib.lunaSettings.LunaSettings
@@ -15,10 +16,13 @@ class NSIModPlugin : BaseModPlugin() {
     companion object {
         fun setupFactionIndustryKnowledge() {
             for (fac in Global.getSector().allFactions) {
-                for (spec in NSISettings.industrySpecs.values) {
-                    if (spec.knownBy.contains("base_bp")) {
-                        fac.addKnownIndustry(spec.id)
-                        break
+                for (entry in NSISettings.industrySpecs) {
+                    val spec = entry.value
+                    if (spec.knownBy.contains("standard")) {
+                        if (!fac.isPlayerFaction) {
+                            fac.addKnownIndustry(spec.id)
+                            continue
+                        }
                     }
 
                     if (spec.knownBy.contains(fac.id)) {
@@ -63,10 +67,7 @@ class NSIModPlugin : BaseModPlugin() {
         NSISettings.loadSettings()
 
         Global.getSector().addTransientListener(NSIBPShopAdder())
-        for (listener in Global.getSector().listenerManager.getListeners(NSILootListener::class.java).toSet()) {
-            Global.getSector().listenerManager.removeListener(listener)
-            // TODO remove later
-        }
+        Global.getSector().addTransientListener(NSISellListener())
         Global.getSector().listenerManager.addListener(NSILootListener(), true)
         Global.getSector().listenerManager.addListener(NSIHAFactorAdder(), true)
     }
@@ -85,6 +86,7 @@ class NSIModPlugin : BaseModPlugin() {
     * It is recommended to start placing your modded star systems from here,
     * as starsectors procgen will avoid placing stars and hyperspace storms nearby existing systems, preventing overlap.*/
     override fun onNewGame() {
+        setupFactionIndustryKnowledge()
     }
 
     /*Runs after onNewGame, after the economy has finished loading.
@@ -96,7 +98,6 @@ class NSIModPlugin : BaseModPlugin() {
     }
 
     override fun onNewGameAfterTimePass() {
-        setupFactionIndustryKnowledge()
     }
 
     override fun onAboutToLinkCodexEntries() {

@@ -22,7 +22,6 @@ class NSIBPShopAdder: BaseCampaignEventListener(false) {
             Submarkets.SUBMARKET_BLACK,
             Submarkets.GENERIC_MILITARY,
             "exerelin_prismMarket",
-            "sotf_forgeshipmarket"
         )
     }
 
@@ -41,6 +40,9 @@ class NSIBPShopAdder: BaseCampaignEventListener(false) {
     }
 
     private fun addBlueprints(submarket: SubmarketAPI, market: MarketAPI) {
+        var mult = NSISettings.getDropChanceMult()
+        if (mult == 0f) mult = 0.1f
+
         val cargo = submarket.cargo
         for (stack in cargo.stacksCopy) {
             if (stack.isSpecialStack && stack.specialDataIfSpecial.id.contains(Ids.BLUEPRINT_ITEM)) {
@@ -64,12 +66,19 @@ class NSIBPShopAdder: BaseCampaignEventListener(false) {
         for (entry in knownBlueprints) {
             var weight = entry.sellWeight
             if (submarket.specId == "exerelin_prismMarket") {
-                weight += (100f - weight).coerceAtLeast(0f)
+                weight = (100f - weight).coerceAtLeast(0f)
             }
-            picker.add(entry.id, entry.sellWeight)
+            val id = entry.id
+            if (Global.getSector().playerFaction.knownIndustries.contains(id)) {
+                weight *= 0.1f
+            }
+            if (entry.upgradeTo.isNotEmpty() && NSISettings.industrySpecs[entry.upgradeTo] != null && !Global.getSector().playerFaction.knowsIndustry(entry.upgradeTo)) {
+                weight = 5f
+            }
+            picker.add(entry.id, weight)
             totalWeight += weight
         }
-        picker.add("nothing", totalWeight * 100f)
+        picker.add("nothing", (totalWeight * 30f) / mult)
 
         while (picksLeft-- > 0f) {
             val picked = picker.pick()

@@ -24,6 +24,9 @@ val modDependencies = listOf(
     "LunaLib.jar", //LunaLib
 
     "lw_Console.jar",
+    "PatchLibAPI.jar", //Add PatchLib here like this
+
+    "IndEvo.jar",
 
     //Some other common dependencies, uncomment them if you need them.
     //Make sure to note them in mod_info.json as well.
