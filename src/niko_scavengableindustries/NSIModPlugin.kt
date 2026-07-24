@@ -8,6 +8,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Items
 import com.fs.starfarer.api.impl.campaign.intel.events.HostileActivityEventIntel
 import lunalib.lunaSettings.LunaSettings
 import lunalib.lunaSettings.LunaSettingsListener
+import niko_scavengableindustries.NSISettings.getHullmodTags
 import niko_scavengableindustries.industries.NSICryosanctum
 import niko_scavengableindustries.industries.SpyBureau.SpyBureauDefenseFactor
 
@@ -17,12 +18,19 @@ class NSIModPlugin : BaseModPlugin() {
         fun setupFactionIndustryKnowledge() {
             for (fac in Global.getSector().allFactions) {
                 for (entry in NSISettings.industrySpecs) {
+                    val tags = fac.getHullmodTags()
                     val spec = entry.value
-                    if (spec.knownBy.contains("standard")) {
-                        if (!fac.isPlayerFaction) {
-                            fac.addKnownIndustry(spec.id)
-                            continue
-                        }
+                    if ("base_bp" in spec.knownBy) {
+                        fac.addKnownIndustry(spec.id)
+                        continue
+                    }
+                    if ("standard" in spec.knownBy && !fac.isPlayerFaction) {
+                        fac.addKnownIndustry(spec.id)
+                        continue
+                    }
+                    if (spec.knownBy.any { it in tags }) {
+                        fac.addKnownIndustry(spec.id)
+                        continue
                     }
 
                     if (spec.knownBy.contains(fac.id)) {

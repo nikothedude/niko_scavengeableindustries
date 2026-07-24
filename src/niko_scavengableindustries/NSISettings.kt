@@ -1,8 +1,10 @@
 package niko_scavengableindustries
 
 import com.fs.starfarer.api.Global
+import com.fs.starfarer.api.campaign.FactionAPI
 import lunalib.lunaSettings.LunaSettings
 import niko_scavengableindustries.utils.DebugUtils
+import org.lazywizard.lazylib.ext.json.iterator
 import kotlin.collections.set
 
 object NSISettings {
@@ -17,6 +19,43 @@ object NSISettings {
     val TEMP_FLAGS = HashSet<String>()
 
     const val DROP_MULT_PER_DROPPABLE = 0.1f
+
+    val factionsToTags = genFactionsToTags()
+
+    fun genFactionsToTags(): HashMap<String, MutableSet<String>> {
+        val map = HashMap<String, MutableSet<String>>()
+
+        for (obj in Global.getSettings().getMergedSpreadsheetData("faction", "data/world/factions/factions.csv")) {
+            val tags = HashSet<String>()
+            val sourcePath = obj.getString("faction") ?: continue // gets the path where all instances of this faction should be
+
+            DebugUtils.log.info("loading $sourcePath")
+            val mergedJson = Global.getSettings().getMergedJSON(sourcePath)
+            var id: String? = null
+            if (mergedJson.has("id")) {
+                id = mergedJson.getString("id")
+            }
+            if (id != null && mergedJson.has("knownHullMods")) {
+                val hmodObj = mergedJson.getJSONObject("knownHullMods")
+                if (hmodObj.has("tags")) {
+                    val tagsArray = hmodObj.getJSONArray("tags")
+                    for (i in 0 until tagsArray.length()) {
+                        val tag = tagsArray.get(i).toString()
+                        tags += tag
+                    }
+                }
+            }
+            if (id != null) {
+                map[id] = tags
+            }
+        }
+        return map
+    }
+
+    fun FactionAPI.getHullmodTags(): MutableSet<String> {
+        if (factionsToTags[id] == null) return HashSet()
+        return factionsToTags[id]!!
+    }
 
     fun loadSettings() {
         getEnabledMods()

@@ -2,7 +2,7 @@ id,drop_weight,sell_weight,req_mod_ids,req_flags,upgrade_to,known_by,discovery_t
 #EXAMPLE,"if 0, never drops from loot","if 0, never sold by factions","separated by commas
 if a modid listed here is not loaded, the augment is not added","separated by commas
 checks to see if weve enabled our mod's limiting in config",ind id. will be much less likely to generate if the req. ind isnt known,"separated by commas
-faction ids, only applied on new game",text entered here is appended to the blueprint
+faction ids/hmod tags, only applied on new game",text entered here is appended to the blueprint
 NSI_constructionAcceleratorIndustry,100,100,,,,"mercenary, scavengers","This type of infrastructure was well-used in the initial colonization rush of the sector. Unfortunately, the exact methods, policies, and equipment needed for such rampant expansion was too disorganized to fall onto a standardized blueprint... until now. Now, you can replicate the gold rush of ages past."
 NSI_cryosanctum,50,0,,,,"independent, mercenary","A decidely post-collapse invention, the Cryosanctum of Nomios was long considered the  only sanctum in the sector - til now. It would seem more polities than just Nomios had the same idea, as this spec proudly declares.
 
@@ -55,9 +55,20 @@ IndEvo_Warehouse,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, independent
 Would be to create massive, city-level warehouses that can store anything and whatever you wish. It is certainly a better solution than one large hangar in the middle of nowhere. The question is... is it worth it?
 
 You consider an definite ""maybe""."
+IndEvo_embassy,100,100,IndEvo,LOCK_INDEVO,,standard,"Resembling more a luxury hotel than a diplomatic outpost, this collection of architecture, psychology, and political scripture explains how best to keep a dignitary satisfied, content, and favorable - if at high cost."
 IndEvo_pirateHaven,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, pirate","Created once by the Pirate Lord Loth, this is the roughly-worded and badly-drawn spec of an entire planetary industry dedicated to criminality, raiding, and seedy warfare. Massive concourses with raid-screens, blaring war-info, troop movements, and other sensitive espionage to thousands of volunteer raiders, offering large cuts in exchange for their irregularity.
 
 A substantial portion of this spec is also dedicated to crowd control. An entirely secondary system is written here - intense survellience, massive guard retinues, and titanic walls to keep the rest of the colony safe from these raving raiders. You estimate such an undertaking would be a logistical nightmare - but something you, and only you, could possibly pull off."
+,,,,,,,
+IndEvo_LightPalace,10,10,IndEvo,LOCK_INDEVO,,"mercenary, hegemony",
+IndEvo_DarkPalace,10,10,IndEvo,LOCK_INDEVO,,"mercenary, diktat",
+IndEvo_Memorial,10,10,IndEvo,LOCK_INDEVO,,"mercenary, hegemony, diktat",
+IndEvo_LeisureOrbitals,10,10,IndEvo,LOCK_INDEVO,,"mercenary, tritachyon",
+IndEvo_Megachurch,10,10,IndEvo,LOCK_INDEVO,,"mercenary, luddic_church",
+IndEvo_IcePalace,10,10,IndEvo,LOCK_INDEVO,,mercenary,
+IndEvo_LavaFortress,10,10,IndEvo,LOCK_INDEVO,,"mercenary, luddic_path",
+IndEvo_LifeTree,10,10,IndEvo,LOCK_INDEVO,,"mercenary, luddic_church",
+IndEvo_CloudPainter,10,10,IndEvo,LOCK_INDEVO,,"mercenary, independent",
 ,,,,,,,
 #Vanilla - off by default,,,,,,,
 megaport,150,400,,LOCK_VANILLA,spaceport,standard,
@@ -83,5 +94,5 @@ lightindustry,100,300,,LOCK_VANILLA,,standard,
 heavyindustry,150,300,,LOCK_VANILLA,,standard,
 orbitalworks,100,300,,LOCK_VANILLA,heavyindustry,standard,
 aquaculture,100,300,,LOCK_VANILLA,,"diktat, hegemony, persean",
-,,300,,,,,
+,,,,,,,
 heavybatteries,150,300,,LOCK_VANILLA,grounddefenses,standard,

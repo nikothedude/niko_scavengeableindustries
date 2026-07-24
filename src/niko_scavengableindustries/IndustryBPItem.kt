@@ -82,7 +82,7 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
         val industryId = stack.specialDataIfSpecial.data
         val known = Global.getSector().playerFaction.knowsIndustry(industryId)
 
-        tooltip!!.addTitle(industry.name, Misc.getHighlightColor())
+        tooltip!!.addTitle("${industry.name} - ${if (industry.hasTag(Industries.TAG_INDUSTRY)) "Industry" else "Structure"}", Misc.getBrightPlayerColor())
         tooltip.addPara(industry.desc, opad)
 
         val spec = NSISettings.industrySpecs[industryId]

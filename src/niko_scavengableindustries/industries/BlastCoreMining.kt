@@ -50,8 +50,7 @@ class BlastCoreMining: BaseIndustry() {
         )
 
         const val OUTPUT_MULT = 1.5f
-        const val IMPROVED_INCR = 0.25f
-        const val ALPHA_INCR = 0.25f
+        const val ALPHA_INCR = 0.5f
         const val INCOME_MULT = 3f
         const val TECTONIC_CHANCE = 0.5f
 
@@ -73,7 +72,6 @@ class BlastCoreMining: BaseIndustry() {
         val bonusText = if (mult < 1f) " (Shortages)" else ""
         var outputMult = OUTPUT_MULT
         if (aiCoreId == Commodities.ALPHA_CORE) outputMult += ALPHA_INCR
-        if (isImproved) outputMult += IMPROVED_INCR
 
         val allMining = getMining()
         for (ind in allMining) {
@@ -142,6 +140,7 @@ class BlastCoreMining: BaseIndustry() {
     }
 
     private fun tryConditions() {
+        if (isImproved) return
         if (prob(TECTONIC_CHANCE) && !(market.hasCondition(Conditions.TECTONIC_ACTIVITY) || market.hasCondition(Conditions.EXTREME_TECTONIC_ACTIVITY))) {
             val intel = MessageIntel(
                 "Added Tectonic Activity to ${market.name}",
@@ -246,7 +245,7 @@ class BlastCoreMining: BaseIndustry() {
     }
 
     override fun addImproveDesc(info: TooltipMakerAPI?, mode: Industry.ImprovementDescriptionMode?) {
-        info?.addPara("Increases ore output by a further %s.", 0f, Misc.getHighlightColor(), toPercent(IMPROVED_INCR))
+        info?.addPara("Negates the chance to %s.", 0f, Misc.getHighlightColor(), "cause tectonic activity")
     }
 
     override fun addAlphaCoreDescription(tooltip: TooltipMakerAPI?, mode: AICoreDescriptionMode?) {

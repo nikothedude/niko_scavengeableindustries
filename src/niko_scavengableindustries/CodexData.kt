@@ -1,8 +1,10 @@
 package niko_scavengableindustries
 
+import com.fs.starfarer.api.impl.campaign.ids.Conditions
 import com.fs.starfarer.api.impl.campaign.ids.Industries
 import com.fs.starfarer.api.impl.codex.CodexDataV2
 import com.fs.starfarer.api.loading.IndustrySpecAPI
+import com.fs.starfarer.campaign.econ.MarketCondition
 
 object CodexData {
     fun linkCodexEntries() {
@@ -26,6 +28,7 @@ object CodexData {
             }
         }
         createReciprocalLink(CodexDataV2.getIndustryEntryId("NSI_SpyBureau"), CodexDataV2.getIndustryEntryId("NSI_SpyOutpost"))
+        createReciprocalLink(CodexDataV2.getIndustryEntryId("NSI_luddicMonument"), CodexDataV2.getConditionEntryId(Conditions.LUDDIC_MAJORITY))
     }
 
     private fun createReciprocalLink(entryIdOne: String, entryIdTwo: String) {

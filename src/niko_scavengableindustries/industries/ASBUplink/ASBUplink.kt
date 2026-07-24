@@ -16,8 +16,6 @@ import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
 import data.scripts.DelayedExecution
 import niko_scavengableindustries.NSISettings
-import niko_scavengableindustries.industries.BlastCoreMining.Companion.ALPHA_INCR
-import niko_scavengableindustries.industries.BlastCoreMining.Companion.IMPROVED_INCR
 import niko_scavengableindustries.utils.StringUtils.toPercent
 
 /// Allows ASBs to fire in-combat and in-campaign (need to make code for both... shouldnt be hard for campaign. Check aegis missiles...)
