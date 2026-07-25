@@ -11,6 +11,7 @@ object NSISettings {
 
     var indEvoEnabled = false
     var patchLibEnabled = false
+    var vokEnabled = false
 
     var lockIndEvo = false
     var lockVanilla = false
@@ -60,8 +61,8 @@ object NSISettings {
     fun loadSettings() {
         getEnabledMods()
 
-        lockIndEvo = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
-        lockVanilla = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
+        lockIndEvo = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
+        lockVanilla = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
 
         lockModStructures()
         loadGenDataFromCSV()
@@ -73,6 +74,9 @@ object NSISettings {
         }
         if (lockVanilla) {
             TEMP_FLAGS += "LOCK_VANILLA"
+            if (!vokEnabled) {
+                TEMP_FLAGS += "VOKLESS"
+            }
         }
     }
 
@@ -80,6 +84,7 @@ object NSISettings {
         val manager = Global.getSettings().modManager ?: return
         indEvoEnabled = manager.isModEnabled("IndEvo")
         patchLibEnabled = manager.isModEnabled("patchlib")
+        vokEnabled = manager.isModEnabled("aotd_vok")
     }
 
     fun loadGenDataFromCSV() {

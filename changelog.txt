@@ -1,3 +1,14 @@
+0.3.1
+
+PROBABLY SAVE COMPATIBLE
+
+Patchlib content disabled - it wasnt ready yet
+
+Industry BP renamed/recolored
+Blast core mining improvement now prevents tectonic activity from being added
+Industry knowledge distribution now determined by hmod tags
+    Allows for things like HMI to get scavenger bps
+
 0.3.0
 PROBABLY SAVE COMPATIBLE
 

@@ -20,7 +20,7 @@ NSI_blastCoreMining,100,100,,,,"mercenary, scavengers","This spec appears to be 
 NSI_ASBUplink,50,50,,,,"mercenary, scavengers, persean","Rarely documented, these flak complexes were only ever really used on Domain fortress worlds, where they conducted business, research, and generally kept things they wished noone to ever see.
 
 A staggering piece of military equipment, the flak cannon listed in this spec is at least as big as a city, and capable of levelling a mountain. Unfortunately for you, its uses outside planet defense seems to be limited by DRM in the included software."
-NSI_luddicMonument,50,100,patchlib,,,"mercenary, luddic_church, luddic_path","A collection of notes, similarities, and comparisons between the popular Luddic Shrines across the sector. Taken together, it becomes a list of traits that promise to attract the faithful from all edges of space. And while expensive, is nearly a necessity if you wish to perform ""unsavory"" acts while remaining in the good graces of your flock."
+NSI_luddicMonument,50,100,patchlib,DISABLED,,"mercenary, luddic_church, luddic_path","A collection of notes, similarities, and comparisons between the popular Luddic Shrines across the sector. Taken together, it becomes a list of traits that promise to attract the faithful from all edges of space. And while expensive, is nearly a necessity if you wish to perform ""unsavory"" acts while remaining in the good graces of your flock."
 ,,,,,,,
 #IndEvo - off by default,,,,,,,
 IndEvo_AdAssem,100,100,IndEvo,LOCK_INDEVO,,"mercenary, scavengers, tritachyon","A decidely Tri-Tachyon invention, the Variable Assembler was sort of like the Cartridge Coffee Maker of industry. The corporation would sell customers without the ability to produce certain items a fairly cheap blueprint for an assembler, and then a prohibitively expensive chip for its ingredients. It rapidly became a success, including in the Persean Sector.
@@ -81,18 +81,18 @@ starfortress_mid,100,300,,LOCK_VANILLA,battlestation_mid,standard,
 orbitalstation_high,100,300,,LOCK_VANILLA,,standard,
 battlestation_high,100,300,,LOCK_VANILLA,orbitalstation_high,standard,
 starfortress_high,100,300,,LOCK_VANILLA,battlestation_high,standard,
-commerce,100,300,,LOCK_VANILLA,,standard,
+commerce,100,300,,"LOCK_VANILLA, VOKLESS",,standard,
 waystation,100,300,,LOCK_VANILLA,,standard,
-fuelprod,100,300,,LOCK_VANILLA,,"diktat, hegemony",
+fuelprod,100,300,,"LOCK_VANILLA, VOKLESS",,"diktat, hegemony",
 patrolhq,150,400,,LOCK_VANILLA,,standard,
 militarybase,100,300,,LOCK_VANILLA,patrolhq,standard,
 highcommand,100,300,,LOCK_VANILLA,militarybase,"hegemony, persean",
 ,,300,,,,,
 techmining,100,300,,LOCK_VANILLA,,standard,
 ,,300,,,,,
-lightindustry,100,300,,LOCK_VANILLA,,standard,
-heavyindustry,150,300,,LOCK_VANILLA,,standard,
-orbitalworks,100,300,,LOCK_VANILLA,heavyindustry,standard,
-aquaculture,100,300,,LOCK_VANILLA,,"diktat, hegemony, persean",
+lightindustry,100,300,,"LOCK_VANILLA, VOKLESS",,standard,
+heavyindustry,150,300,,"LOCK_VANILLA, VOKLESS",,standard,
+orbitalworks,100,300,,"LOCK_VANILLA, VOKLESS",heavyindustry,standard,
+aquaculture,100,300,,"LOCK_VANILLA, VOKLESS",,"diktat, hegemony, persean",
 ,,,,,,,
 heavybatteries,150,300,,LOCK_VANILLA,grounddefenses,standard,

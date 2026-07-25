@@ -15,7 +15,7 @@ import patchlib.api.patch.After
 import patchlib.api.patch.Patch
 import sound.int
 
-@Patch(target = ClassMatch(type = LuddicMajority::class))
+//@Patch(target = ClassMatch(type = LuddicMajority::class)) // REMOVED DUE TO PATCHLIB ALPHA
 object LuddicMonumentPatch {
     @JvmStatic
     @After(target = MethodMatch(methodName = "matchesBonusConditions", staticOnly = true))

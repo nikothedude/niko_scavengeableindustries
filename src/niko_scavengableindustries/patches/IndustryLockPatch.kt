@@ -10,7 +10,7 @@ import patchlib.api.match.ClassMatch
 import patchlib.api.match.MethodMatch
 import patchlib.api.patch.After
 
-@Patch(target = ClassMatch(subtype = Industry::class))
+//@Patch(target = ClassMatch(subtype = Industry::class)) // REMOVED DUE TO PATCHLIB ALPHA
 object IndustryLockPatch {
     @JvmStatic
     @After(target = MethodMatch(methodName = "isAvailableToBuild"))

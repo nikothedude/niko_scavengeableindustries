@@ -150,10 +150,27 @@ class LuddicMonument: BaseIndustry(), MarketImmigrationModifier {
                     "Ironically increases pather interest limit to %s.", opad, highlight,
             "" + ((1f - UPKEEP_MULT) * 100f).toInt() + "%", "" + DEMAND_REDUCTION, "${(INTEREST_LIMIT + ALPHA_LIMIT).toInt()}"
         )
+
+        tooltip.addPara(
+            "INDUSTRY IS NON FUNCTIONAL TIL PATCHLIB RELEASE.",
+            10f
+        )
     }
 
     override fun getPatherInterest(): Float {
         return 0f
+    }
+
+    override fun isAvailableToBuild(): Boolean {
+        if (!market.faction.knowsIndustry(spec.id)) return false
+
+        return super.isAvailableToBuild()
+    }
+
+    override fun showWhenUnavailable(): Boolean {
+        if (!market.faction.knowsIndustry(spec.id)) return false
+
+        return super.showWhenUnavailable()
     }
 
 }
