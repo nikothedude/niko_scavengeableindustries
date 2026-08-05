@@ -75,7 +75,7 @@ class SpyBureau: BaseIndustry(), FleetEventListener, EconomyTickListener {
         val size = market.size
         class AddScript() : DelayedExecution(IntervalUtil(0f, 0f), useDays = false) {
             override fun executeImpl() {
-                if (!market.hasIndustry("NSI_SpyBureauSecondInd")) {
+                if (market.hasIndustry(spec.id) && !market.hasIndustry("NSI_SpyBureauSecondInd")) {
                     market.addIndustry("NSI_SpyBureauSecondInd")
                 }
             }
@@ -110,7 +110,7 @@ class SpyBureau: BaseIndustry(), FleetEventListener, EconomyTickListener {
 
         class RemoveScript() : DelayedExecution(IntervalUtil(0f, 0f), useDays = false) {
             override fun executeImpl() {
-                if (!market.hasIndustry("NSI_SpyBureauSecondInd")) {
+                if (!market.hasIndustry(spec.id)) {
                     market.removeIndustry("NSI_SpyBureauSecondInd", null, false)
                 }
             }
