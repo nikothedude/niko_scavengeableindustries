@@ -20,7 +20,6 @@ import org.magiclib.kotlin.isPatrol
 import org.magiclib.kotlin.isWarFleet
 
 /// If stationed on the primary heavy industry, all fleets from your faction get smods. EXPENSIVE.
-// TODO FUCKING TEST THIS. GET A ALPHA GOING
 class ExpertDockworks: BaseIndustry() {
     val listener = ExpertDockworksInflationListener(this)
 

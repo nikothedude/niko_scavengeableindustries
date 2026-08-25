@@ -31,6 +31,8 @@ import niko_scavengableindustries.industries.SpyBureau.SpyFleetAssignmentAI.Comp
 import niko_scavengableindustries.utils.StringUtils.toPercent
 import org.magiclib.kotlin.getFactionMarkets
 import org.magiclib.kotlin.getMarketsInLocation
+import org.magiclib.kotlin.getMaxIndustries
+import org.magiclib.kotlin.getNumIndustries
 
 /// Sends fleets to go spy on other factions, doing some piracy on the way.
 /// Destabilizes hostile markets, blows up trade fleets, returns with their goods (see privateer base for an example)
@@ -437,12 +439,14 @@ class SpyBureau: BaseIndustry(), FleetEventListener, EconomyTickListener {
     override fun isAvailableToBuild(): Boolean {
         if (!market.faction.knowsIndustry(spec.id)) return false
         if (isSuperceded()) return false
+        if (getIndustriesLeft() <= 0f) return false
 
         return super.isAvailableToBuild()
     }
 
     override fun getUnavailableReason(): String? {
         if (isSuperceded()) return "Only one can exist at a time"
+        if (getIndustriesLeft() <= 0f) return "Not enough industry slots"
 
         return super.getUnavailableReason()
     }
@@ -452,4 +456,6 @@ class SpyBureau: BaseIndustry(), FleetEventListener, EconomyTickListener {
 
         return super.showWhenUnavailable()
     }
+
+    fun getIndustriesLeft() = market.getMaxIndustries() - market.getNumIndustries()
 }

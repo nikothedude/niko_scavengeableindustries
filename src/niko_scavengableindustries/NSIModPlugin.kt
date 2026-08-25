@@ -85,7 +85,7 @@ class NSIModPlugin : BaseModPlugin() {
             if (intel == null) return
 
             intel.addFactor(SpyBureauDefenseFactor())
-            //intel.addActivity(NSICryosanctum.CrisisFactor(), NSICryosanctum.CrisisCause()) // TODO
+            intel.addActivity(NSICryosanctum.CrisisFactor(intel), NSICryosanctum.CrisisCause(intel)) // TODO
         }
     }
 

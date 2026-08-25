@@ -61,8 +61,8 @@ object NSISettings {
     fun loadSettings() {
         getEnabledMods()
 
-        lockIndEvo = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
-        lockVanilla = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
+        lockIndEvo = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
+        lockVanilla = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
 
         lockModStructures()
         loadGenDataFromCSV()

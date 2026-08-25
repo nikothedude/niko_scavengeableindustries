@@ -11,7 +11,7 @@ import patchlib.api.match.MethodMatch
 import patchlib.api.patch.After
 import patchlib.api.patch.Patch
 
-//@Patch(target = ClassMatch(type = CommodityForge::class)) // REMOVED DUE TO PATCHLIB ALPHA
+@Patch(target = ClassMatch(type = CommodityForge::class)) // REMOVED DUE TO PATCHLIB ALPHA
 object CommForgeLock {
     @JvmStatic
     @After(target = MethodMatch(methodName = "isAvailableToBuild"))

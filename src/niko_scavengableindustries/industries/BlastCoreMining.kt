@@ -158,10 +158,10 @@ class BlastCoreMining: BaseIndustry() {
     private fun attemptDowngrade(): HashMap<String, String> {
         val result = HashMap<String, String>()
         for (condition in market.conditions.toSet()) {
-            val outcome = PROGRESSION_LIST[condition.spec.id] ?: continue
             if (prob(IGNORE_CHANCE)) {
                 continue
             }
+            val outcome = PROGRESSION_LIST[condition.spec.id] ?: continue
             if (outcome == "REMOVE") {
                 result[condition.spec.name] = "Removed"
                 market.removeCondition(condition.spec.id)

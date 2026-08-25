@@ -73,7 +73,7 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
         val middle = if (isPlayerSide) -height else height
         val width = engine.mapWidth / 2f
 
-        return (Vector2f(org.lazywizard.lazylib.MathUtils.getRandomNumberInRange(-width, width), middle))
+        return (Vector2f(MathUtils.getRandomNumberInRange(-width, width), middle))
     }
 
     fun fireShot(area: Area, target: Vector2f): CombatEntityAPI? {
@@ -166,7 +166,7 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
     class ShotData(
         val proj: DamagingProjectileAPI,
         val target: Vector2f,
-        var warningRotation: Float = org.lazywizard.lazylib.MathUtils.getRandomNumberInRange(0f, 360f),
+        var warningRotation: Float = MathUtils.getRandomNumberInRange(0f, 360f),
     ) {
         var mine: MissileAPI? = null
         var lastDist: Float = Float.MAX_VALUE
@@ -187,7 +187,7 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
                     }
                 }
             }
-            val dist = org.lazywizard.lazylib.MathUtils.getDistance(
+            val dist = MathUtils.getDistance(
                 shot,
                 target
             )
@@ -252,7 +252,7 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
             null
         )
         if (threatIndicator is MissileAPI) {
-            val dist = org.lazywizard.lazylib.MathUtils.getDistance(data.proj, data.target)
+            val dist = MathUtils.getDistance(data.proj, data.target)
             var speed = data.proj.velocity.length()
             if (speed == 0f) speed = 1f
             threatIndicator.untilMineExplosion = 0.1f
@@ -277,7 +277,7 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
             val ship = deployed.ship ?: continue
             if (ship.isHulk || !ship.isAlive || ship.isFighter || ship.isDrone || ship.isStationModule) continue
             // target located
-            val targetLoc = org.lazywizard.lazylib.MathUtils.getRandomPointInCircle(
+            val targetLoc = MathUtils.getRandomPointInCircle(
                 ship.location,
                 ship.collisionRadius + INACCURACY_INCR
             )
