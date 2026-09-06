@@ -6,9 +6,11 @@ import com.fs.starfarer.api.campaign.SpecialItemData
 import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI
 import com.fs.starfarer.api.impl.campaign.ids.Factions
+import com.fs.starfarer.api.impl.campaign.ids.Industries
 import com.fs.starfarer.api.impl.campaign.ids.Submarkets
 import com.fs.starfarer.api.util.WeightedRandomPicker
 import niko_scavengableindustries.utils.FactionUtils.getSellableIndustryIds
+import org.magiclib.kotlin.isMilitary
 import kotlin.text.get
 
 /** Adds augments to submarkets for purchase. */
@@ -42,6 +44,7 @@ class NSIBPShopAdder: BaseCampaignEventListener(false) {
     private fun addBlueprints(submarket: SubmarketAPI, market: MarketAPI) {
         var mult = NSISettings.getDropChanceMult()
         if (mult == 0f) mult = 0.1f
+        mult *= NSISettings.dropCoeff
 
         val cargo = submarket.cargo
         for (stack in cargo.stacksCopy) {
@@ -71,6 +74,11 @@ class NSIBPShopAdder: BaseCampaignEventListener(false) {
             val id = entry.id
             if (Global.getSector().playerFaction.knownIndustries.contains(id)) {
                 weight *= 0.1f
+            }
+            val spec = Global.getSettings().getIndustrySpec(entry.id)
+            if ((spec.hasTag(Industries.TAG_MILITARY) || spec.hasTag(Industries.TAG_GROUNDDEFENSES) || spec.hasTag(
+                    Industries.TAG_TACTICAL_BOMBARDMENT)) && market.isMilitary()) {
+                weight *= 3f
             }
             if (entry.upgradeTo.isNotEmpty() && NSISettings.industrySpecs[entry.upgradeTo] != null && !Global.getSector().playerFaction.knowsIndustry(entry.upgradeTo)) {
                 weight = 5f

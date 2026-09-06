@@ -62,14 +62,14 @@ internal object ReflectionUtilsV2 {
     }
 
     @JvmStatic
-    fun set(fieldName: String? = null, instanceToModify: Any, newValue: Any?, fieldType: Class<*>? = null)
+    fun set(fieldName: String? = null, instanceToModify: Any, newValue: Any?, fieldType: Class<*>? = null, clazz: Class<*> = instanceToModify.javaClass)
     {
-        getField(fieldName, instanceToModify.javaClass, fieldType)!!.set(instanceToModify, newValue)
+        getField(fieldName, clazz, fieldType)!!.set(instanceToModify, newValue)
     }
 
     @JvmStatic
-    fun get(fieldName: String? = null, instanceToGetFrom: Any, fieldType: Class<*>? = null): Any? {
-        return getField(fieldName, instanceToGetFrom.javaClass, fieldType)!!.get(instanceToGetFrom)
+    fun get(fieldName: String? = null, instanceToGetFrom: Any, fieldType: Class<*>? = null, clazz: Class<*> = instanceToGetFrom.javaClass): Any? {
+        return getField(fieldName, clazz, fieldType)!!.get(instanceToGetFrom)
     }
 
     fun instantiate(clazz: Class<*>, vararg arguments: Any?) : Any?

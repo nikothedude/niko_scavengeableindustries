@@ -48,6 +48,7 @@ class NSIModPlugin : BaseModPlugin() {
     @Throws(Exception::class)
     override fun onApplicationLoad() {
         Global.getSettings().getSpecialItemSpec(Items.PLASMA_DYNAMO).params += ", NSI_nebulaSiphoner"
+        Global.getSettings().getSpecialItemSpec(Items.CRYOARITHMETIC_ENGINE).params += ", NSI_outpostDefense"
 
         for (spec in Global.getSettings().allSpecialItemSpecs) {
             if (spec.tags.contains("nanoforge")) {

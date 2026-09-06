@@ -60,7 +60,7 @@ class NSILootListener: ShowLootListener {
             }*/
             val mult = NSISettings.getDropChanceMult()
             if (d.group.contains("blueprints")) {
-                value = (d.value * (mult))
+                value = (d.value * (mult)) * NSISettings.dropCoeff
             }
             /*if (d.group.contains("hullmod")) {
                 value = (d.value * 0.08f)
@@ -104,7 +104,7 @@ class NSILootListener: ShowLootListener {
             }*/
             val mult = NSISettings.getDropChanceMult()
             if (d.group.contains("blueprints")) {
-                chances = (d.chances * (mult * 2f))
+                chances = (d.chances * (mult * 2f)) * NSISettings.dropCoeff
             }
             /*if (d.group.contains("hullmod")) {
                 chances = (d.chances * 0.2f)

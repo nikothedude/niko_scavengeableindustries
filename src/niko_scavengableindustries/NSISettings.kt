@@ -16,6 +16,11 @@ object NSISettings {
     var lockIndEvo = false
     var lockVanilla = false
 
+    var maxSellPrice = 50000
+    var defaultSellMult = 0.25f
+    var defaultBuyMult = 0.5f
+    var dropCoeff = 1f
+
     val industrySpecs = HashMap<String, IndustryGenSpec>()
     val TEMP_FLAGS = HashSet<String>()
 
@@ -63,6 +68,10 @@ object NSISettings {
 
         lockIndEvo = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
         lockVanilla = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
+        maxSellPrice = LunaSettings.getInt(Ids.MOD_ID, "NSI_maxSellPrice")!!
+        defaultSellMult = LunaSettings.getFloat(Ids.MOD_ID, "NSI_defaultSellMult")!!
+        defaultBuyMult = LunaSettings.getFloat(Ids.MOD_ID, "NSI_defaultBuyMult")!!
+        dropCoeff = LunaSettings.getFloat(Ids.MOD_ID, "NSI_dropRateCoeff")!!
 
         lockModStructures()
         loadGenDataFromCSV()
@@ -142,6 +151,9 @@ object NSISettings {
             val discoveryString = row.optString("discovery_text") ?: ""
             val upgradeTo = row.optString("upgrade_to") ?: ""
 
+            var designType = row.optString("design_type") ?: ""
+            if (designType.isEmpty()) designType = "Common"
+
             val spec = IndustryGenSpec(
                 id,
                 dropWeight,
@@ -150,7 +162,8 @@ object NSISettings {
                 reqFlags,
                 knownBy,
                 discoveryString,
-                upgradeTo
+                upgradeTo,
+                designType
             )
             industrySpecs[id] = spec
         }

@@ -3,12 +3,14 @@ package niko_scavengableindustries
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.CargoStackAPI
 import com.fs.starfarer.api.campaign.CargoTransferHandlerAPI
-import com.fs.starfarer.api.campaign.econ.Industry
 import com.fs.starfarer.api.campaign.econ.MarketAPI
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI
+import com.fs.starfarer.api.campaign.impl.items.BlueprintProviderItem
 import com.fs.starfarer.api.campaign.impl.items.IndustryBlueprintItemPlugin
-import com.fs.starfarer.api.impl.campaign.econ.impl.BaseIndustry
+import com.fs.starfarer.api.impl.SharedUnlockData
 import com.fs.starfarer.api.impl.campaign.ids.Industries
+import com.fs.starfarer.api.impl.campaign.ids.Tags
+import com.fs.starfarer.api.impl.codex.CodexDataV2
 import com.fs.starfarer.api.loading.IndustrySpecAPI
 import com.fs.starfarer.api.ui.Alignment
 import com.fs.starfarer.api.ui.TooltipMakerAPI
@@ -58,11 +60,12 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
     override fun getPrice(market: MarketAPI?, submarket: SubmarketAPI?): Int {
         var price = super.getPrice(market, submarket)
 
-        var cap = 70000
-        var mult = 0.25f
+        var cap = NSISettings.maxSellPrice
+        if (cap == -1) cap = Int.MAX_VALUE
+        var mult = NSISettings.defaultSellMult
         if (beingBought) {
             cap = Int.MAX_VALUE
-            mult = 0.5f
+            mult = NSISettings.defaultBuyMult
         }
 
         price = (price * mult).roundToInt()
@@ -75,6 +78,8 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
         transferHandler: CargoTransferHandlerAPI?,
         stackSource: Any?
     ) {
+        tooltip?.codexEntryId = CodexDataV2.getIndustryEntryId(industry.id)
+
         val opad = 10f
         val g = Misc.getGrayColor()
         val b = Misc.getPositiveHighlightColor()
@@ -83,6 +88,16 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
         val known = Global.getSector().playerFaction.knowsIndustry(industryId)
 
         tooltip!!.addTitle("${industry.name} - ${if (industry.hasTag(Industries.TAG_INDUSTRY)) "Industry" else "Structure"}", Misc.getBrightPlayerColor())
+        val design = designType
+        Misc.addDesignTypePara(tooltip, design, opad)
+        tooltip.addPara(spec.desc, 10f).color = Misc.getGrayColor()
+
+        tooltip.addSectionHeading(
+            "Description",
+            Alignment.MID,
+            opad
+        )
+
         tooltip.addPara(industry.desc, opad)
 
         val spec = NSISettings.industrySpecs[industryId]
@@ -117,6 +132,11 @@ class IndustryBPItem: IndustryBlueprintItemPlugin() {
         } else {
             tooltip.addPara("Right-click to learn", b, opad)
         }
+    }
+
+    override fun getDesignType(): String? {
+        val genSpec = NSISettings.industrySpecs[industry.id] ?: return null
+        return genSpec.designType
     }
 
     fun getInd(): IndustrySpecAPI? = industry
