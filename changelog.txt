@@ -1,4 +1,5 @@
 0.4.0
+PROBABLY SAVE COMPATIBLE
 
 New industry - Planetary Defense Network
     Sidegrade to Military Base
