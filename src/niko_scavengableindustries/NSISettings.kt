@@ -66,8 +66,8 @@ object NSISettings {
     fun loadSettings() {
         getEnabledMods()
 
-        lockIndEvo = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
-        lockVanilla = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
+        lockIndEvo = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
+        lockVanilla = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
         maxSellPrice = LunaSettings.getInt(Ids.MOD_ID, "NSI_maxSellPrice")!!
         defaultSellMult = LunaSettings.getFloat(Ids.MOD_ID, "NSI_defaultSellMult")!!
         defaultBuyMult = LunaSettings.getFloat(Ids.MOD_ID, "NSI_defaultBuyMult")!!

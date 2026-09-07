@@ -57,7 +57,6 @@ class NSIModPlugin : BaseModPlugin() {
         }
 
         LunaSettings.addSettingsListener(NSISettingsChangedListener())
-
         return
     }
 

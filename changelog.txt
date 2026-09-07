@@ -1,3 +1,24 @@
+0.4.0
+
+New industry - Planetary Defense Network
+    Sidegrade to Military Base
+    REQUIRES BUILDING MENU OVERHAUL OR IT WONT SPAWN!
+
+    Spawns 5 heavy patrols in orbit of the colony - 1 light patrol if improved
+    Delays incoming raids by 30 days
+    Caps colony size to 5
+    Much cheaper than a military base
+    +2x ground defense
+
+    Intended for use on outer colonies without much defense, or fortress worlds
+
+Military markets much more likely to sell military industry BPs
+Spruced up industry BPs + added design types
+Added a few lunasettings
+
+Added the cryosanctum crisis
+Spy bureau cannot be added if you dont have enough industries
+
 0.3.2
 SAVE COMPATIBLE
 
