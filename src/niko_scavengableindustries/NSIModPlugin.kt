@@ -78,6 +78,7 @@ class NSIModPlugin : BaseModPlugin() {
         Global.getSector().addTransientListener(NSISellListener())
         Global.getSector().listenerManager.addListener(NSILootListener(), true)
         Global.getSector().listenerManager.addListener(NSIHAFactorAdder(), true)
+        Global.getSector().listenerManager.addListener(NSIIndBPRaidListener(), true)
     }
 
     class NSIHAFactorAdder: ColonyCrisesSetupListener {
@@ -94,7 +95,6 @@ class NSIModPlugin : BaseModPlugin() {
     * It is recommended to start placing your modded star systems from here,
     * as starsectors procgen will avoid placing stars and hyperspace storms nearby existing systems, preventing overlap.*/
     override fun onNewGame() {
-        setupFactionIndustryKnowledge()
     }
 
     /*Runs after onNewGame, after the economy has finished loading.
@@ -106,6 +106,7 @@ class NSIModPlugin : BaseModPlugin() {
     }
 
     override fun onNewGameAfterTimePass() {
+        setupFactionIndustryKnowledge()
     }
 
     override fun onAboutToLinkCodexEntries() {

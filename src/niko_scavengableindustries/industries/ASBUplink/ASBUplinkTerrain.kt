@@ -22,6 +22,7 @@ import com.fs.starfarer.api.impl.campaign.terrain.PeakPerformanceBuff
 import com.fs.starfarer.api.impl.campaign.terrain.RingRenderer
 import com.fs.starfarer.api.ui.Alignment
 import com.fs.starfarer.api.ui.TooltipMakerAPI
+import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
 import niko_scavengableindustries.utils.MathUtils.prob
 import niko_scavengableindustries.utils.StringUtils.toPercent
@@ -56,7 +57,7 @@ class ASBUplinkTerrain: BaseRingTerrain() {
         const val IMPROVED_RANGE_MULT = 1.5f
         const val ALPHA_DAMAGE_MULT = 1.2f
 
-        const val BASE_TIMEOUT = 0.3f
+        const val BASE_TIMEOUT = 0.2f
 
         const val MIN_PROFILE_DEFAULT = 300f
         const val MAX_PROFILE_DEFAULT = 800f
@@ -89,7 +90,7 @@ class ASBUplinkTerrain: BaseRingTerrain() {
 
     fun getCastedParams(): ASBUplinkTerrainParams = (params as ASBUplinkTerrainParams)
 
-    val vfxTimeouts = HashMap<CampaignFleetAPI, Float>()
+    val vfxTimeout = IntervalUtil(1f, 3f)
 
     override fun applyEffect(entity: SectorEntityToken?, days: Float) {
         super.applyEffect(entity, days)
@@ -153,10 +154,12 @@ class ASBUplinkTerrain: BaseRingTerrain() {
             }
         }
 
-        if (vfxTimeouts[fleet] == null) {
+        vfxTimeout.advance(days)
+        if (vfxTimeout.intervalElapsed()) {
             doVfx(fleet, accuracy)
 
-            adjustTimeout(fleet, (BASE_TIMEOUT / indParams.damageCoeff) * MathUtils.getRandomNumberInRange(0.3f, 1.7f))
+            val base = (BASE_TIMEOUT / indParams.damageCoeff) * MathUtils.getRandomNumberInRange(0.3f, 1.7f)
+            vfxTimeout.setInterval(base, base)
         }
     }
 
@@ -183,24 +186,7 @@ class ASBUplinkTerrain: BaseRingTerrain() {
         val days = Misc.getDays(amount)
         val shortageMult = getCastedParams().industry.getShortagesForTerrain()
         val finalDays = days * shortageMult
-
-        if (vfxTimeouts.isEmpty()) return
-        for (entry in vfxTimeouts.entries.toSet()) {
-            if (!entry.key.isAlive) {
-                vfxTimeouts -= entry.key
-                continue
-            }
-            vfxTimeouts[entry.key] = entry.value - finalDays
-            if (vfxTimeouts[entry.key]!! <= 0f) {
-                vfxTimeouts -= entry.key
-            }
-        }
-    }
-
-    fun adjustTimeout(fleet: CampaignFleetAPI, days: Float) {
-        if (vfxTimeouts[fleet] == null) vfxTimeouts[fleet] = 0f
-
-        vfxTimeouts[fleet] = vfxTimeouts[fleet]!! + days
+        vfxTimeout.advance(finalDays)
     }
 
     private fun shouldApplyEffect(fleet: CampaignFleetAPI): Boolean {

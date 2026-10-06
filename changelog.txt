@@ -1,3 +1,15 @@
+0.5.0
+MAYBE SAVE COMPATIBLE - TODO TEST
+
+ASB Terrain now has a per-instance VFX cooldown instead of per-fleet
+ASB Flak shots can now optionally have a warning icon for their landing hspot
+
+Blast core mining now increases output further
+
+Added an option to the largest market of a faction to raid for industry BPs
+
+Fixed a bug with planetary defense network delays stacking
+
 0.4.0
 PROBABLY SAVE COMPATIBLE
 

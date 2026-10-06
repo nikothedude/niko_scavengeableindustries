@@ -20,6 +20,7 @@ object NSISettings {
     var defaultSellMult = 0.25f
     var defaultBuyMult = 0.5f
     var dropCoeff = 1f
+    var doASBWarningIcon = false
 
     val industrySpecs = HashMap<String, IndustryGenSpec>()
     val TEMP_FLAGS = HashSet<String>()
@@ -66,12 +67,13 @@ object NSISettings {
     fun loadSettings() {
         getEnabledMods()
 
-        lockIndEvo = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
-        lockVanilla = false //LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
+        lockIndEvo = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockIndEvoStructures")!!
+        lockVanilla = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_LockVanillaStructures")!!
         maxSellPrice = LunaSettings.getInt(Ids.MOD_ID, "NSI_maxSellPrice")!!
         defaultSellMult = LunaSettings.getFloat(Ids.MOD_ID, "NSI_defaultSellMult")!!
         defaultBuyMult = LunaSettings.getFloat(Ids.MOD_ID, "NSI_defaultBuyMult")!!
         dropCoeff = LunaSettings.getFloat(Ids.MOD_ID, "NSI_dropRateCoeff")!!
+        doASBWarningIcon = LunaSettings.getBoolean(Ids.MOD_ID, "NSI_doASBWarningIcon")!!
 
         lockModStructures()
         loadGenDataFromCSV()

@@ -49,8 +49,8 @@ class BlastCoreMining: BaseIndustry() {
             Pair(Conditions.VOLATILES_TRACE, "REMOVE"),
         )
 
-        const val OUTPUT_MULT = 1.5f
-        const val ALPHA_INCR = 0.5f
+        const val OUTPUT_MULT = 2f
+        const val ALPHA_INCR = 1f
         const val INCOME_MULT = 3f
         const val TECTONIC_CHANCE = 0.5f
 

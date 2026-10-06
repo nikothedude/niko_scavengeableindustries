@@ -2,6 +2,7 @@ package niko_scavengableindustries.industries.OutpostDefense
 
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.campaign.CampaignFleetAPI
+import com.fs.starfarer.api.campaign.StarSystemAPI
 import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin
 import com.fs.starfarer.api.campaign.econ.Industry
 import com.fs.starfarer.api.campaign.econ.Industry.IndustryTooltipMode
@@ -24,6 +25,8 @@ import com.fs.starfarer.api.util.Misc
 import niko_scavengableindustries.ReflectionUtilsV2.get
 import niko_scavengableindustries.ReflectionUtilsV2.set
 import niko_scavengableindustries.utils.MathUtils.trimHangingZero
+import org.lazywizard.lazylib.ext.campaign.contains
+import org.magiclib.kotlin.getMarketsInLocation
 import org.magiclib.kotlin.setFlagWithReason
 import sound.int
 import java.util.*
@@ -63,6 +66,17 @@ class OutpostDefense: MilitaryBase(), MarketImmigrationModifier {
 
         for (raid in raids) {
             if (raid.organizeStage == null) continue
+            var end = false
+            for (market in market.primaryEntity.containingLocation.getMarketsInLocation(market.faction.id).filter { it != market && it.hasIndustry(spec.id) }) {
+                val ind = market.getIndustry(spec.id) as OutpostDefense
+                if (raid in ind.checked) {
+                    end = true
+                    break
+                }
+            }
+            if (end) {
+                break
+            }
             val max = get("maxDays", raid.organizeStage, Float::class.java, clazz = BaseRaidStage::class.java) as Float
             set("maxDays", raid.organizeStage, (max + BASE_DELAY_INCR) * BASE_DELAY_MULT, Float::class.java, clazz = BaseRaidStage::class.java)
             checked += raid

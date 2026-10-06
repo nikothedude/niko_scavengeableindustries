@@ -3,6 +3,7 @@ package niko_scavengableindustries.combat
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin
 import com.fs.starfarer.api.combat.CollisionClass
+import com.fs.starfarer.api.combat.CombatEngineLayers
 import com.fs.starfarer.api.combat.CombatEntityAPI
 import com.fs.starfarer.api.combat.DamageType
 import com.fs.starfarer.api.combat.DamagingProjectileAPI
@@ -14,11 +15,13 @@ import com.fs.starfarer.api.input.InputEventAPI
 import com.fs.starfarer.api.loading.DamagingExplosionSpec
 import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
+import niko_scavengableindustries.NSISettings
 import niko_scavengableindustries.industries.ASBUplink.ASBUplink
 import niko_scavengableindustries.industries.ASBUplink.ASBUplinkTerrain
 import org.lazywizard.lazylib.MathUtils
 import org.lazywizard.lazylib.VectorUtils
 import org.lwjgl.util.vector.Vector2f
+import org.magiclib.util.MagicRender
 import java.awt.Color
 
 class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain: ASBUplinkTerrain): BaseEveryFrameCombatPlugin() {
@@ -204,17 +207,19 @@ class ASBUplinkScript(val isPlayerSide: Boolean, val ind: ASBUplink, val terrain
             if (engine.isEntityInPlay(shot)) {
                 entry.lastDist = dist
 
-                entry.warningRotation += (20f * amount)
-                val spec = getExplosionSpec()
-                /*MagicRender.singleframe(
-                Global.getSettings().getSprite("graphics/fx/NSI_flakWarning.png"),
-                target,
-                Vector2f(spec.radius * 1.5f, spec.radius * 1.5f),
-                entry.warningRotation,
-                if (isPlayerSide) GOOD_WARNING_COLOR else BAD_WARNING_COLOR,
-                true,
-                CombatEngineLayers.UNDER_SHIPS_LAYER
-            )*/
+                if (NSISettings.doASBWarningIcon) {
+                    entry.warningRotation += (20f * amount)
+                    val spec = getExplosionSpec()
+                    MagicRender.singleframe(
+                        Global.getSettings().getSprite("graphics/fx/NSI_flakWarning.png"),
+                        target,
+                        Vector2f(spec.radius * 1.5f, spec.radius * 1.5f),
+                        entry.warningRotation,
+                        if (isPlayerSide) GOOD_WARNING_COLOR else BAD_WARNING_COLOR,
+                        true,
+                        CombatEngineLayers.UNDER_SHIPS_LAYER
+                    )
+                }
             }
         }
     }
