@@ -162,6 +162,7 @@ class OutpostDefense: MilitaryBase(), MarketImmigrationModifier {
 
     override fun getUnavailableReason(): String? {
         if (market.isOversized()) return "Must be at most size ${MAX_SIZE - 1}"
+        if (!market.faction.knowsIndustry(spec.id)) return "Blueprint Unknown"
         return super.getUnavailableReason()
     }
 
