@@ -89,6 +89,7 @@ class ASBUplink: BaseIndustry() {
     }
 
     fun getShortagesForTerrain(): Float {
+        if (!isFunctional) return 0f
         return getDeficitMult(
             Commodities.HAND_WEAPONS,
             Commodities.SUPPLIES

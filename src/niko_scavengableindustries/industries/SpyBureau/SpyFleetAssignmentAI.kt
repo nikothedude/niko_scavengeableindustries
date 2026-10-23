@@ -13,10 +13,7 @@ import com.fs.starfarer.api.impl.campaign.procgen.themes.BaseAssignmentAI
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.MarketCMD
 import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
-import com.fs.starfarer.campaign.ai.CampaignFleetAI
-import com.fs.starfarer.campaign.ai.ModularFleetAI
-import niko_scavengableindustries.NSFIBaseScript
-import org.codehaus.janino.Mod
+import niko_scavengableindustries.NSIBaseScript
 import org.lazywizard.lazylib.MathUtils
 import org.magiclib.kotlin.getMarketsInLocation
 import org.magiclib.kotlin.getStationFleet
@@ -26,7 +23,7 @@ import org.magiclib.kotlin.isTrader
 class SpyFleetAssignmentAI(
     val fleet: CampaignFleetAPI,
     val origFaction: FactionAPI
-): NSFIBaseScript(), FleetEventListener {
+): NSIBaseScript(), FleetEventListener {
 
     companion object {
         fun giveInitialAssignments(

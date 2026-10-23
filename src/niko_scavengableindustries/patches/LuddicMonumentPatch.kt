@@ -11,6 +11,7 @@ import niko_scavengableindustries.industries.LuddicMonument
 import patchlib.api.context.AfterContext
 import patchlib.api.match.ClassMatch
 import patchlib.api.match.MethodMatch
+import patchlib.api.match.StaticType
 import patchlib.api.patch.After
 import patchlib.api.patch.Patch
 import sound.int
@@ -18,7 +19,7 @@ import sound.int
 @Patch(target = ClassMatch(type = LuddicMajority::class)) // REMOVED DUE TO PATCHLIB ALPHA
 object LuddicMonumentPatch {
     @JvmStatic
-    @After(target = MethodMatch(methodName = "matchesBonusConditions", staticOnly = true))
+    @After(target = MethodMatch(methodName = "matchesBonusConditions", staticType = StaticType.STATIC))
     fun modifyMatchesBonusConditions(context: AfterContext) {
         if (context.returnValue == true) return
         val market = context.getArg(0) as? MarketAPI ?: return

@@ -106,6 +106,7 @@ class NSIModPlugin : BaseModPlugin() {
     }
 
     override fun onNewGameAfterTimePass() {
+        NSISettings.loadSettings()
         setupFactionIndustryKnowledge()
     }
 

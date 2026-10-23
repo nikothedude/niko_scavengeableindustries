@@ -5,7 +5,7 @@ import com.fs.starfarer.api.campaign.LocationAPI
 import niko_scavengableindustries.utils.DebugUtils
 
 /** A generic base class filled with funcs and vars that I use a lot in my common scripting. */
-abstract class NSFIBaseScript: EveryFrameScriptWithCleanup{
+abstract class NSIBaseScript: EveryFrameScriptWithCleanup{
     var started: Boolean = false
     private var done: Boolean = false
     var deleted: Boolean = false

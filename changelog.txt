@@ -1,3 +1,10 @@
+1.0.0
+NOT SAVE COMPATIBLE
+
+Full release
+
+Fixed a bug with factions not knowing their bps at game start
+
 0.5.0
 MAYBE SAVE COMPATIBLE - TODO TEST
 

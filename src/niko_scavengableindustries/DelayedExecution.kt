@@ -3,13 +3,13 @@ package data.scripts
 import com.fs.starfarer.api.Global
 import com.fs.starfarer.api.util.IntervalUtil
 import com.fs.starfarer.api.util.Misc
-import niko_scavengableindustries.NSFIBaseScript
+import niko_scavengableindustries.NSIBaseScript
 
 abstract class DelayedExecution(
     val interval: IntervalUtil,
     var useDays: Boolean = true,
     var runIfPaused: Boolean = false
-): NSFIBaseScript() {
+): NSIBaseScript() {
     override fun startImpl() {
         Global.getSector().addScript(this)
     }
