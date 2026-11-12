@@ -22,6 +22,7 @@ class TrainingCamp: BaseIndustry() {
         const val GROUND_DEFENSE_MULT = 1.25f
         const val ALPHA_CORE_TRAINING_MULT = 0.25f
         const val IMPROVED_TRANING_MULT = 0.25f
+        const val XP_BASE = 0.03f
     }
 
     var storedOfficer: PersonAPI? = null
@@ -83,7 +84,7 @@ class TrainingCamp: BaseIndustry() {
             )
 
             exp.data.num = marines.size
-            exp.data.addXP((0.01f * amount * extraMult) * shortageMult)
+            exp.data.addXP((XP_BASE * amount * extraMult) * shortageMult)
             exp.data.clampXP()
         }
 

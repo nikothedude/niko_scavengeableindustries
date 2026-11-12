@@ -1,3 +1,10 @@
+1.0.1
+SAVE COMPATIBLE
+
+Update to 0.98.5a-RC4
+
+Tripled training camp marine xp rate
+
 1.0.0
 NOT SAVE COMPATIBLE
 

@@ -27,7 +27,6 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI.TooltipCreator
 import com.fs.starfarer.api.util.Misc
 import niko_scavengableindustries.utils.MathUtils
 import org.magiclib.kotlin.getFactionMarkets
-import sound.int
 import java.awt.Color
 import java.util.*
 

@@ -28,7 +28,6 @@ import niko_scavengableindustries.utils.MathUtils.trimHangingZero
 import org.lazywizard.lazylib.ext.campaign.contains
 import org.magiclib.kotlin.getMarketsInLocation
 import org.magiclib.kotlin.setFlagWithReason
-import sound.int
 import java.util.*
 
 class OutpostDefense: MilitaryBase(), MarketImmigrationModifier {

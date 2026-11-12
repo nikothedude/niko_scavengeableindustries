@@ -14,7 +14,6 @@ import patchlib.api.match.MethodMatch
 import patchlib.api.match.StaticType
 import patchlib.api.patch.After
 import patchlib.api.patch.Patch
-import sound.int
 
 @Patch(target = ClassMatch(type = LuddicMajority::class)) // REMOVED DUE TO PATCHLIB ALPHA
 object LuddicMonumentPatch {
